@@ -12,11 +12,11 @@ Imagine this is a 2d array of size 48x7 (Half hours by days), and selecting boxe
 
 If my code, comments, or formatting suck and you can't tell what's going on, let me know. It would help me as much as you. Ask any questions about anything. I've never written code for others to read before, and I'm sure for some of you it's your first time having to interpret another's code. So if it's too confusing just message me or leave a comment on the facebook post.
 
-#project-outline
+# project-outline
 Plz keep in javascript and jquery.
 
-A) export  
-  1) Table to int array (0 being 0, 1 is one, 2 being -1)
-  2) Array to string
-B) heatmap
-  1)Calculate score//Sum of scores//Or how to not sort by average rating
+# A) export  
+   1) Table to int array (0 being 0, 1 is one, 2 being -1)
+   2) Array to string
+# B) heatmap
+   1)Calculate score//Sum of scores//Or how to not sort by average rating
