@@ -16,7 +16,7 @@ If my code, comments, or formatting suck and you can't tell what's going on, let
 Plz keep in javascript and jquery.
 
 # A) export  
-   1) Table to int array (0 being nothing, 1 is free/blue(1), 2 being busy/red(-1)
+   1) Table to int array (0 being nothing, 1 is free/blue(1), 2 being busy/red(-1))
   
    2) Array to string
 # B) heatmap
