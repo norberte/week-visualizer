@@ -16,7 +16,7 @@ If my code, comments, or formatting suck and you can't tell what's going on, let
 Plz keep in javascript and jquery.
 
 # A) export  
-   1) Table to int array (0 being 0, 1 is one, 2 being -1)
+   1) Table to int array (0 being 0, 1 is one, 2 being -1)\n
    2) Array to string
 # B) heatmap
    1)Calculate score//Sum of scores//Or how to not sort by average rating
