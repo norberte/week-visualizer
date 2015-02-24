@@ -10,6 +10,8 @@ $(document).ready(function() {                                                  
     
     //I think the table array should be of bytes not ints
     //Because we are going to be outputing in ACSII, which is the same size
+    //Essentially 4 table cells will fit into each element of the array
+    //The array stores in decimal you may need to convert from binary to decimal
     var tableArray = new Uint8Array(84);
     
     clipTable();
@@ -66,8 +68,18 @@ $(document).ready(function() {                                                  
         }
     });
     
-    //Full reset button
-    $("#btn_reset").click(function() {                                          //When "#btn_reset" is clicked do function(){code}
+    //Reset to free button
+    $("#btn_resetFree").click(function() {                                      //When "#btn_resetFree" is clicked do function(){code}
+        resetTable("free");
+    });
+    
+    //Reset to busy button
+    $("#btn_resetBusy").click(function() {
+        resetTable("busy");
+    });
+    
+    //Reset button
+    $("#btn_reset").click(function() {
         resetTable();
     });
     
@@ -103,6 +115,19 @@ $(document).ready(function() {                                                  
         for(var n = 0; n <= 23; n++) {
             if(startHour <= n && n <= endHour) {
                 $("#week-table tr.hour_" + n + " td").removeClass("free busy");
+            }
+            else {
+                $("#week-table tr.hour_" + n + " td").removeClass("free");
+                $("#week-table tr.hour_" + n + " td").addClass("busy");
+            }
+        }
+    }
+    
+    function resetTable(htmlClass) {
+        for(var n = 0; n <= 23; n++) {
+            if(startHour <= n && n <= endHour) {
+                $("#week-table tr.hour_" + n + " td").removeClass("free busy");
+                $("#week-table tr.hour_" + n + " td").addClass(htmlClass);
             }
             else {
                 $("#week-table tr.hour_" + n + " td").removeClass("free");
