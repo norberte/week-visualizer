@@ -24,3 +24,6 @@ Plz keep in javascript and jquery.
 
 # JQuery Tutorial - Getting started with jQuery
 http://welovecoding.com/tutorials/javascript/getting-started-with-jquery/
+
+# JQuery Documentation Here:
+https://api.jquery.com/
