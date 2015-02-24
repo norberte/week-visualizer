@@ -63,8 +63,8 @@ $(document).ready(function() {
 	});
 	
 	//Full reset button
-	$("#btn_reset").click(function(){
-        $("#week-table tr td").removeClass("free busy");
+	$("#btn_reset").click(function() {
+		resetTable();
     });
 	
 	//Ability to select free times, busy times, and reset
@@ -95,6 +95,18 @@ $(document).ready(function() {
 	**Functions
 	*/
 	
+	function resetTable() {
+		for(var n = 0; n <= 23; n++) {
+			if(startHour <= n && n <= endHour) {
+				$("#week-table tr.hour_" + n + " td").removeClass("free busy");
+			}
+			else {
+				$("#week-table tr.hour_" + n + " td").removeClass("free");
+				$("#week-table tr.hour_" + n + " td").addClass("busy");
+			}
+		}
+	}
+	
 	//Hide the rows not within the start and end times
 	function clipTable() {
 		for(var n = 0; n <= 23; n++) {
@@ -117,20 +129,23 @@ $(document).ready(function() {
 	}
 	function hideRow(n) {
 		$("#week-table tr.hour:eq(" + n + ")").hide();
-		$("#week-table tr.hour:eq(" + n + ") td").removeClass("free busy");
+		$("#week-table tr.hour:eq(" + n + ") td").removeClass("free");
+		$("#week-table tr.hour:eq(" + n + ") td").addClass("busy");
 	}
 	function showColumn(m) {
 		$("#week-table tr *:nth-child(" + (m+1) + ")").show(); //(m+1) to keep things 0 index based. For some reason :eq is not working.
 	}
 	function hideColumn(m) {
 		$("#week-table tr *:nth-child(" + (m+1) + ")").hide();
-		$("#week-table tr td:nth-child(" + (m+1) + ")").removeClass("free busy");
+		$("#week-table tr td:nth-child(" + (m+1) + ")").removeClass("free");
+		$("#week-table tr td:nth-child(" + (m+1) + ")").addClass("busy");
 	}
 	
 	//Show and hide full hours
 	function hideHour(n) {
 		$("#week-table tr.hour_" + n).hide();
-		$("#week-table tr.hour_" + n + " td").removeClass("free busy");
+		$("#week-table tr.hour_" + n + " td").removeClass("free");
+		$("#week-table tr.hour_" + n + " td").addClass("busy");
 	}
 	function showHour(n) {
 		$("#week-table tr.hour_" + n).show();
@@ -140,11 +155,13 @@ $(document).ready(function() {
 	function hideHalfHours() {
 		$("#week-table tr.half").hide();
 		$("#week-table tr.half td").removeClass("free busy");
-		//TODO: For every first half of the hour with class
-		//Add same class to second half of the hour.
-		//E.g. Set 1:00 as busy, hide half hours. Now the 1:00-1:30 block
-		//is set, but the 1:30-2:00 block is not. This is bad. In the
-		//"full hour" mode, a selection should cover 1:00-2:00.
+		/*
+		**TODO: For every first half of the hour with class
+		**Add same class to second half of the hour.
+		**E.g. Set 1:00 as busy, hide half hours. Now the 1:00-1:30 block
+		**is set, but the 1:30-2:00 block is not. This is bad. In the
+		**"full hour" mode, a selection should cover 1:00-2:00.
+		*/
 	}
 	function showHalfHours() {
 		$("#week-table tr.half").show();
