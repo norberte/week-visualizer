@@ -26,7 +26,7 @@ $(document).ready(function() {													//jQuery crash course:
 	
 	//Constrain the start and end hours to sensible values
 	//Then update the table to reflect the changes
-	$("#list_startHour").change(function() {									//When the value of #list_startHour changes, do function(){code}
+	$("#list_startHour").change(function() {									//When the value property of #list_startHour changes, do function(){code}
 		startHour = parseInt($(this).val());									//this.val() = The selected value of the element
 		if(endHour < startHour) {
 			endHour = startHour;
