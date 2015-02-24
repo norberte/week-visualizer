@@ -1,7 +1,7 @@
 # week-visualizer
 A site to plan the best time based around everyone's schedules.
 
-http://www.vankessel.ca/week-visualizer/
+https://ubco.github.io/week-visualizer/
 
 # Things to know
 I realize that you guys may not actually be able to read my mind, so here are some things about the project you should know.
