@@ -1,5 +1,5 @@
-$(document).ready(function() {
-	
+$(document).ready(function() {													//jQuery crash course:
+																				//When the document is done loading, do the function(){code}
 	/***************************************************************************
 	**Initialization
 	*/
@@ -8,11 +8,15 @@ $(document).ready(function() {
 	var startHour = parseInt($("#list_startHour").val());
 	var endHour = parseInt($("#list_endHour").val());
 	
+	//I think the table array should be of bytes not ints
+	//Because we are going to be outputing in ACSII, which is the same size
+	var tableArray = new Uint8Array(84);
+	
 	clipTable();
 	
 	//Disable context menu and apply classes
-	$("#week-table tr td").on("contextmenu", function() {
-		$(this).removeClass("free busy");
+	$("#week-table tr td").on("contextmenu", function() {						//$("Element to do stuff on").on("Event to trigger function", function(){code});
+		$(this).removeClass("free busy");										//this = "#week-table tr td", remove both free and busy classes
 		return false;
 	});
 	
@@ -22,11 +26,11 @@ $(document).ready(function() {
 	
 	//Constrain the start and end hours to sensible values
 	//Then update the table to reflect the changes
-	$("#list_startHour").change(function() {
-		startHour = parseInt($(this).val());
+	$("#list_startHour").change(function() {									//When the value of #list_startHour changes, do function(){code}
+		startHour = parseInt($(this).val());									//this.val() = The selected value of the element
 		if(endHour < startHour) {
 			endHour = startHour;
-			$("#list_endHour").val(startHour);
+			$("#list_endHour").val(startHour);									//this.val(foo) = Set the selected value to foo
 		}
 		clipTable();
 	});
@@ -40,8 +44,8 @@ $(document).ready(function() {
 	});
 	
 	//Show or hide the weekend columns
-	$("#cb_weekend").change(function() {
-		if($("#cb_weekend").prop("checked")) {
+	$("#cb_weekend").change(function() {										//When the checkbox #cb_weekend changes
+		if($("#cb_weekend").prop("checked")) {									//If the property checked is true
 			showColumn(6);
 			showColumn(7);
 		}
@@ -63,18 +67,18 @@ $(document).ready(function() {
 	});
 	
 	//Full reset button
-	$("#btn_reset").click(function() {
+	$("#btn_reset").click(function() {											//When "#btn_reset" is clicked do function(){code}
 		resetTable();
     });
 	
 	//Ability to select free times, busy times, and reset
-	$("#week-table tr td").mousedown(function(event) {
-		switch (event.which) {
+	$("#week-table tr td").click(function(event) {							
+		switch (event.which) {													//event.which returns the value of the mouseclick in this case
 			//Left mouse
 			case 1:
 				//If green toggle one, otherwise toggle both
-				if(!$(this).hasClass("free") && !$(this).hasClass("busy")) {
-					$(this).toggleClass("free");
+				if(!$(this).hasClass("free") && !$(this).hasClass("busy")) {	//hasClass returns true if the element has the specified class
+					$(this).toggleClass("free");								//Self explanatory
 				}
 				else {
 					$(this).toggleClass("free");
@@ -125,10 +129,10 @@ $(document).ready(function() {
 	
 	//Show and hide rows and columns
 	function showRow(n) {
-		$("#week-table tr.hour:eq(" + n + ")").show();
+		$("#week-table tr.hour:eq(" + n + ")").show();							//If hidden, reveal the element. :eq(n) means select the nth matched element
 	}
 	function hideRow(n) {
-		$("#week-table tr.hour:eq(" + n + ")").hide();
+		$("#week-table tr.hour:eq(" + n + ")").hide();							//If visible, hide the element (actually takes up no space, not just invisible)
 		$("#week-table tr.hour:eq(" + n + ") td").removeClass("free");
 		$("#week-table tr.hour:eq(" + n + ") td").addClass("busy");
 	}
@@ -136,7 +140,7 @@ $(document).ready(function() {
 		$("#week-table tr *:nth-child(" + (m+1) + ")").show(); //(m+1) to keep things 0 index based. For some reason :eq is not working.
 	}
 	function hideColumn(m) {
-		$("#week-table tr *:nth-child(" + (m+1) + ")").hide();
+		$("#week-table tr *:nth-child(" + (m+1) + ")").hide();					//:nth-child() is like :eq(), but gives the index including non-matched siblings
 		$("#week-table tr td:nth-child(" + (m+1) + ")").removeClass("free");
 		$("#week-table tr td:nth-child(" + (m+1) + ")").addClass("busy");
 	}
