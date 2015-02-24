@@ -21,3 +21,6 @@ Plz keep in javascript and jquery.
    2) Array to string
 # B) heatmap
    1)Calculate score//Sum of scores//Or how to not sort by average rating
+
+# JQuery Tutorial - Getting started with jQuery
+http://welovecoding.com/tutorials/javascript/getting-started-with-jquery/
