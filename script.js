@@ -19,7 +19,7 @@ $(document).ready(function() {                                                  
     //Disable context menu and apply classes
     $("#week-table tr td").on("contextmenu", function() {                       //$("Element to do stuff on").on("Event to trigger function", function(){code});
         $(this).removeClass("free busy");                                       //this = "#week-table tr td", remove both free and busy classes
-        return false;
+        return false;                                                           //return false removes the right-click menu
     });
     
     /***************************************************************************
@@ -54,6 +54,8 @@ $(document).ready(function() {                                                  
         else {
             hideColumn(6);
             hideColumn(7);
+            setColumnClass(6, "busy");
+            setColumnClass(7, "busy");
         }
     });
     
@@ -144,6 +146,7 @@ $(document).ready(function() {                                                  
             }
             else {
                 hideHour(n);
+                setHourClass(n, "busy")
             }
         }
         // Hide the half hours if the relevant checkbox is checked
@@ -152,35 +155,34 @@ $(document).ready(function() {                                                  
         }
     }
     
-    //Show and hide rows and columns
+    //Show and hide rows
     function showRow(n) {
         $("#week-table tr.hour:eq(" + n + ")").show();                          //If hidden, reveal the element. :eq(n) means select the nth matched element
     }
     function hideRow(n) {
         $("#week-table tr.hour:eq(" + n + ")").hide();                          //If visible, hide the element (actually takes up no space, not just invisible)
-        $("#week-table tr.hour:eq(" + n + ") td").removeClass("free");
-        $("#week-table tr.hour:eq(" + n + ") td").addClass("busy");
     }
+    
+    //Show and hide columns
     function showColumn(m) {
         $("#week-table tr *:nth-child(" + (m+1) + ")").show(); //(m+1) to keep things 0 index based. For some reason :eq is not working.
     }
     function hideColumn(m) {
         $("#week-table tr *:nth-child(" + (m+1) + ")").hide();                  //:nth-child() is like :eq(), but gives the index including non-matched siblings
-        $("#week-table tr td:nth-child(" + (m+1) + ")").removeClass("free");
-        $("#week-table tr td:nth-child(" + (m+1) + ")").addClass("busy");
     }
     
     //Show and hide full hours
-    function hideHour(n) {
-        $("#week-table tr.hour_" + n).hide();
-        $("#week-table tr.hour_" + n + " td").removeClass("free");
-        $("#week-table tr.hour_" + n + " td").addClass("busy");
-    }
     function showHour(n) {
         $("#week-table tr.hour_" + n).show();
     }
+    function hideHour(n) {
+        $("#week-table tr.hour_" + n).hide();
+    }
     
     //Show and hide all half hours
+    function showHalfHours() {
+        $("#week-table tr.half").show();
+    }
     function hideHalfHours() {
         $("#week-table tr.half").hide();
         $("#week-table tr.half td").removeClass("free busy");
@@ -192,7 +194,40 @@ $(document).ready(function() {                                                  
         **"full hour" mode, a selection should cover 1:00-2:00.
         */
     }
-    function showHalfHours() {
-        $("#week-table tr.half").show();
+    
+    //Add and remove classes for rows
+    function setRowClass(n, htmlClass) {
+        removeRowClasses(n);
+        $("#week-table tr.hour:eq(" + n + ") td").addClass(htmlClass);
+    }
+    function removeRowClasses(n, htmlClasses) {
+        $("#week-table tr.hour:eq(" + n + ") td").removeClass(htmlClasses);
+    }
+    function removeRowClasses(n) {
+        $("#week-table tr.hour:eq(" + n + ") td").removeClass("free busy");
+    }
+    
+    //Add and remove classes for columns
+    function setColumnClass(m, htmlClass) {
+        removeColumnClasses(m);
+        $("#week-table tr td:nth-child(" + (m+1) + ")").addClass(htmlClass);
+    }
+    function removeColumnClasses(m, htmlClasses) {
+        $("#week-table tr td:nth-child(" + (m+1) + ")").removeClass(htmlClasses);
+    }
+    function removeColumnClasses(m) {
+        $("#week-table tr td:nth-child(" + (m+1) + ")").removeClass("free busy");
+    }
+    
+    //Add and remove classes for full hours
+    function setHourClass(n, htmlClass) {
+        removeHourClasses(n);
+        $("#week-table tr.hour_" + n + " td").addClass(htmlClass);
+    }
+    function removeHourClasses(n, htmlClasses) {
+        $("#week-table tr.hour_" + n + " td").removeClass(htmlClasses);
+    }
+    function removeHourClasses(n) {
+        $("#week-table tr.hour_" + n + " td").removeClass("free busy");
     }
 });
