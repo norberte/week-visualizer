@@ -7,6 +7,8 @@ $(document).ready(function() {                                                  
     //Initialize start and end hours to those selected in the html
     var startHour = parseInt($("#list_startHour").val());
     var endHour = parseInt($("#list_endHour").val());
+	var beforeStartHourDefault = "busy";
+	var afterEndHourDefault = "";
     
     //I think the table array should be of bytes not ints
     //Because we are going to be outputing in ACSII, which is the same size
@@ -69,6 +71,11 @@ $(document).ready(function() {                                                  
             hideHalfHours();
         }
     });
+	
+	//Update the table if a default is changed
+	$("span.radGroup_default input:radio").change(function(){
+		clipTable();
+	});
     
     //Reset to free button
     $("#btn_resetFree").click(function() {                                      //When "#btn_resetFree" is clicked do function(){code}
@@ -102,7 +109,7 @@ $(document).ready(function() {                                                  
             //Middle mouse. Unused
             case 2:
                 break;
-            //Right mouse. Handled in initialization to disable the context menu
+            //Right mouse. Handled at top of section to disable the context menu
             case 3:
                 break;
             default:
@@ -120,45 +127,57 @@ $(document).ready(function() {                                                  
     
     function resetTable() {
         for(var n = 0; n <= 23; n++) {
-            if(startHour <= n && n <= endHour) {
-                $("#week-table tr.hour_" + n + " td").removeClass("free busy");
+            if(n < startHour) {
+                setHourClass(n, getRadioGroupVal("startCutoffDefault"));
             }
-            else {
-                $("#week-table tr.hour_" + n + " td").removeClass("free");
-                $("#week-table tr.hour_" + n + " td").addClass("busy");
+            else if(endHour < n) {
+				setHourClass(n, getRadioGroupVal("endCutoffDefault"));
             }
+			else {
+				removeHourClasses(n);
+			}
         }
     }
     
     function resetTable(htmlClass) {
         for(var n = 0; n <= 23; n++) {
-            if(startHour <= n && n <= endHour) {
-                $("#week-table tr.hour_" + n + " td").removeClass("free busy");
-                $("#week-table tr.hour_" + n + " td").addClass(htmlClass);
+            if(n < startHour) {
+                setHourClass(n, getRadioGroupVal("startCutoffDefault"));
             }
-            else {
-                $("#week-table tr.hour_" + n + " td").removeClass("free");
-                $("#week-table tr.hour_" + n + " td").addClass("busy");
+            else if(endHour < n) {
+				setHourClass(n, getRadioGroupVal("endCutoffDefault"));
             }
+			else {
+				setHourClass(n, htmlClass);
+			}
         }
     }
     
     //Hide the rows not within the start and end times
     function clipTable() {
         for(var n = 0; n <= 23; n++) {
-            if(startHour <= n && n <= endHour) {
-                showHour(n);
+            if(n < startHour) {
+				hideHour(n);
+                setHourClass(n, getRadioGroupVal("startCutoffDefault"));
             }
-            else {
-                hideHour(n);
-                setHourClass(n, "busy")
+            else if(endHour < n) {
+				hideHour(n);
+				setHourClass(n, getRadioGroupVal("endCutoffDefault"));
             }
+			else {
+				showHour(n);
+			}
         }
         // Hide the half hours if the relevant checkbox is checked
         if(!$("#cb_showHalfHour").prop("checked")) {
             hideHalfHours();
         }
     }
+	
+	//Get the value from a group of radio buttons by name
+	function getRadioGroupVal(name) {
+		return $('input:radio[name="' + name + '"]:checked').val();
+	}
     
     //Show and hide rows
     function showRow(n) {
@@ -203,7 +222,10 @@ $(document).ready(function() {                                                  
     //Set and remove classes for rows
     function setRowClass(n, htmlClass) {
         removeRowClasses(n);
-        $("#week-table tr.hour:eq(" + n + ") td").addClass(htmlClass);
+		//If string is not empty
+		if(htmlClass) {
+			$("#week-table tr.hour:eq(" + n + ") td").addClass(htmlClass);
+		}
     }
     function removeRowClasses(n, htmlClasses) {
         $("#week-table tr.hour:eq(" + n + ") td").removeClass(htmlClasses);
@@ -215,7 +237,10 @@ $(document).ready(function() {                                                  
     //Set and remove classes for columns
     function setColumnClass(m, htmlClass) {
         removeColumnClasses(m);
-        $("#week-table tr td:nth-child(" + (m+1) + ")").addClass(htmlClass);
+		//If string is not empty
+		if(htmlClass) {
+			$("#week-table tr td:nth-child(" + (m+1) + ")").addClass(htmlClass);
+		}
     }
     function removeColumnClasses(m, htmlClasses) {
         $("#week-table tr td:nth-child(" + (m+1) + ")").removeClass(htmlClasses);
@@ -226,8 +251,11 @@ $(document).ready(function() {                                                  
     
     //Set and remove classes for full hours
     function setHourClass(n, htmlClass) {
-        removeHourClasses(n);
-        $("#week-table tr.hour_" + n + " td").addClass(htmlClass);
+		removeHourClasses(n);
+		//If string is not empty
+		if(htmlClass) {
+			$("#week-table tr.hour_" + n + " td").addClass(htmlClass);
+		}
     }
     function removeHourClasses(n, htmlClasses) {
         $("#week-table tr.hour_" + n + " td").removeClass(htmlClasses);
@@ -235,6 +263,7 @@ $(document).ready(function() {                                                  
     function removeHourClasses(n) {
         $("#week-table tr.hour_" + n + " td").removeClass("free busy");
     }
+	
 	//Makes Giant-ass string of mostly 0s, with a few 1s and 2s
 	//Function loops through entire table, so it includes all cells
 	//even if they are not shown... :(
