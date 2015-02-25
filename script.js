@@ -108,6 +108,11 @@ $(document).ready(function() {                                                  
             default:
         }
     });
+	
+	//Detects output button press and calls function to make a string.
+	$("#finished").click(function() {		
+		sumTable();
+	});
     
     /***************************************************************************
     **Functions
@@ -230,4 +235,30 @@ $(document).ready(function() {                                                  
     function removeHourClasses(n) {
         $("#week-table tr.hour_" + n + " td").removeClass("free busy");
     }
+	//Makes Giant-ass string of mostly 0s, with a few 1s and 2s
+	//Function loops through entire table, so it includes all cells
+	//even if they are not shown... :(
+	
+	//If using chrome right click page and select "inspect Element"
+	//this is where you will see the output of the console.log, it 
+	//is handy for knowing what order the table is parsed.
+	function sumTable() {
+		var i ="";		
+		$('#week-table tr').each(function () {	
+			console.log("*****************");
+			console.log( ""+this.className);
+			console.log("*****************");
+			 $("td", this).each(function(){	
+				console.log(this.className);
+				if($(this).hasClass("busy")){					
+					i = i+"2";
+				}else if($(this).hasClass("free")){
+					i = i+"1";	
+				}else{
+					i = i+"0"				
+				}; 
+			});		
+		});				
+		document.getElementById("Output").innerHTML = i;
+	}
 });
