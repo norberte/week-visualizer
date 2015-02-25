@@ -14,7 +14,11 @@ $(document).ready(function() {                                                  
     //Because we are going to be outputing in ACSII, which is the same size
     //Essentially 4 table cells will fit into each element of the array
     //The array stores in decimal you may need to convert from binary to decimal
-    var tableArray = new Uint8Array(84);
+	
+	//For the raw 0, 1, 2 values
+	var intTableArray = [];
+	//I have a new idea for the compression. I should do this part. -Kevin
+    var compressedByteTableArray = new Uint8Array();
     
     clipTable();
     
@@ -266,28 +270,28 @@ $(document).ready(function() {                                                  
 	
 	//Makes Giant-ass string of mostly 0s, with a few 1s and 2s
 	//Function loops through entire table, so it includes all cells
-	//even if they are not shown... :(
+	//even if they are not shown... :( <<< That's actually what we need -Kevin
 	
 	//If using chrome right click page and select "inspect Element"
 	//this is where you will see the output of the console.log, it 
 	//is handy for knowing what order the table is parsed.
 	function sumTable() {
-		var i ="";		
+		intTableArray = [];
 		$('#week-table tr').each(function () {	
 			console.log("*****************");
-			console.log( ""+this.className);
+			console.log( "" + this.className);
 			console.log("*****************");
 			 $("td", this).each(function(){	
 				console.log(this.className);
 				if($(this).hasClass("busy")){					
-					i = i+"2";
+					intTableArray.push(2);
 				}else if($(this).hasClass("free")){
-					i = i+"1";	
+					intTableArray.push(1);
 				}else{
-					i = i+"0"				
+					intTableArray.push(0);
 				}; 
 			});		
 		});				
-		document.getElementById("Output").innerHTML = i;
+		document.getElementById("Output").innerHTML = intTableArray.join("");
 	}
 });
