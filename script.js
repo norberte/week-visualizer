@@ -16,16 +16,16 @@ $(document).ready(function() {                                                  
     
     clipTable();
     
-    //Disable context menu and apply classes
-    $("#week-table tr td").on("contextmenu", function() {                       //$("Element to do stuff on").on("Event to trigger function", function(){code});
-        $(this).removeClass("free busy");                                       //this = "#week-table tr td", remove both free and busy classes
-        return false;                                                           //return false removes the right-click menu
-    });
-    
     /***************************************************************************
     **Events
     */
     
+	//Disable context menu and apply classes
+    $("#week-table tr td").on("contextmenu", function() {                       //$("Element to do stuff on").on("Event to trigger function", function(){code});
+        $(this).removeClass("free busy");                                       //this = "#week-table tr td", remove both free and busy classes
+        return false;                                                           //return false removes the right-click menu
+    });
+	
     //Constrain the start and end hours to sensible values
     //Then update the table to reflect the changes
     $("#list_startHour").change(function() {                                    //When the value property of #list_startHour changes, do function(){code}
@@ -200,7 +200,7 @@ $(document).ready(function() {                                                  
         */
     }
     
-    //Add and remove classes for rows
+    //Set and remove classes for rows
     function setRowClass(n, htmlClass) {
         removeRowClasses(n);
         $("#week-table tr.hour:eq(" + n + ") td").addClass(htmlClass);
@@ -212,7 +212,7 @@ $(document).ready(function() {                                                  
         $("#week-table tr.hour:eq(" + n + ") td").removeClass("free busy");
     }
     
-    //Add and remove classes for columns
+    //Set and remove classes for columns
     function setColumnClass(m, htmlClass) {
         removeColumnClasses(m);
         $("#week-table tr td:nth-child(" + (m+1) + ")").addClass(htmlClass);
@@ -224,7 +224,7 @@ $(document).ready(function() {                                                  
         $("#week-table tr td:nth-child(" + (m+1) + ")").removeClass("free busy");
     }
     
-    //Add and remove classes for full hours
+    //Set and remove classes for full hours
     function setHourClass(n, htmlClass) {
         removeHourClasses(n);
         $("#week-table tr.hour_" + n + " td").addClass(htmlClass);
