@@ -294,4 +294,77 @@ $(document).ready(function() {                                                  
 		});				
 		document.getElementById("Output").innerHTML = intTableArray.join("");
 	}
+    
+    //WARNING: Unfinished magic. Will comment the arcane runes below later
+    
+    function encodeIntArray(intArray) {
+        var tempArray = intArray.slice();
+        var encodedArray = [];
+        var trailingByte = encodeTrailingByte(tempArray);
+        
+        encodedArray.push(encodeLeadingByte(tempArray));
+        encodedArray.concat(encodeMiddleBytes(tempArray);
+        encodedArray.push(trailingByte);
+        
+        return encodedArray;
+    }
+    
+    function encodeLeadingByte(intArray) {
+        var type = intArray.shift();
+        var repeatLength = 0;
+        if(type === 2) {
+            while(intArray.shift() === type && repeatLength < 127) {
+                repeatLength += 1;
+            }
+            var byte = addBytePadding(repeatLength.toString(2));
+            byte[0] = 1;
+        }
+        else {
+            while(intArray.shift() === type && repeatLength < 63) {
+                repeatLength += 1;
+            }
+            var byte = addBytePadding(repeatLength.toString(2));
+            byte[0] = 0;
+            byte[1] = type;
+        }
+        return parseInt(byte, 2);
+    }
+
+    function encodeMiddleBytes() {
+        
+    }
+
+    function encodeTrailingByte(intArray) {
+        var type = intArray.pop();
+        var repeatLength = 0;
+        if(type === 0) {
+            while(intArray.pop() === type && repeatLength < 127) {
+                repeatLength += 1;
+            }
+            var byte = addBytePadding(repeatLength.toString(2));
+            byte[0] = 0;
+        }
+        else {
+            while(intArray.pop() === type && repeatLength < 63) {
+                repeatLength += 1;
+            }
+            var byte = addBytePadding(repeatLength.toString(2));
+            byte[0] = 1;
+            byte[1] = type-1;
+        }
+        return parseInt(byte, 2);
+    }
+
+    function addBytePadding(binaryString) {
+        var leftOver = binaryString.length % 8;
+        if(leftOver === 0) {
+            return binaryString;
+        }
+        else {
+            for(var i = 0; i < (8 - leftOver); i++) {
+                binaryString = "0" + binaryString;
+            }
+            return binaryString;
+        }
+    }
 });
