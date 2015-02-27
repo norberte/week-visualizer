@@ -302,9 +302,9 @@ $(document).ready(function() {                                                  
         encodedArray = encodedArray.concat(encodeMiddleBytes(tempArray));
         encodedArray.push(trailingByte);
         
-        //Take each int, change to character representation
-        //then join into a string and return
-        return encodedArray.map(function(x){return String.fromCharCode(x)}).join("");
+        //Take each int, add 256 to avoid invisible characters like newline,
+        //change to character representation then join into a string and return
+        return encodedArray.map(function(x){return String.fromCharCode(x+256)}).join("");
     }
 
     //This is the first byte. The first few bits determine the type (0, 1, or 2)
