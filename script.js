@@ -16,9 +16,9 @@ $(document).ready(function() {                                                  
     //The array stores in decimal you may need to convert from binary to decimal
 	
 	//For the raw 0, 1, 2 values
-	var intTableArray = [];
+	var intArray = [];
 	//I have a new idea for the compression. I should do this part. -Kevin
-    var compressedByteTableArray = new Uint8Array();
+    var encodedIntArray = new Uint8Array();
     
     clipTable();
     
@@ -276,7 +276,7 @@ $(document).ready(function() {                                                  
 	//this is where you will see the output of the console.log, it 
 	//is handy for knowing what order the table is parsed.
 	function sumTable() {
-		intTableArray = [];
+		intArray = [];
 		$('#week-table tr').each(function () {	
 			console.log("*****************");
 			console.log( "" + this.className);
@@ -284,15 +284,15 @@ $(document).ready(function() {                                                  
 			 $("td", this).each(function(){	
 				console.log(this.className);
 				if($(this).hasClass("busy")){					
-					intTableArray.push(2);
+					intArray.push(2);
 				}else if($(this).hasClass("free")){
-					intTableArray.push(1);
+					intArray.push(1);
 				}else{
-					intTableArray.push(0);
+					intArray.push(0);
 				}; 
 			});		
 		});				
-		document.getElementById("Output").innerHTML = intTableArray.join("");
+		document.getElementById("Output").innerHTML = intArray.join("");
 	}
     
     //WARNING: Unfinished magic. Will comment the arcane runes below later
@@ -303,7 +303,7 @@ $(document).ready(function() {                                                  
         var trailingByte = encodeTrailingByte(tempArray);
         
         encodedArray.push(encodeLeadingByte(tempArray));
-        encodedArray.concat(encodeMiddleBytes(tempArray);
+        encodedArray.concat(encodeMiddleBytes(tempArray));
         encodedArray.push(trailingByte);
         
         return encodedArray;
@@ -313,58 +313,74 @@ $(document).ready(function() {                                                  
         var type = intArray.shift();
         var repeatLength = 0;
         if(type === 2) {
-            while(intArray.shift() === type && repeatLength < 127) {
+            while(intArray[0] === type && repeatLength < 127) {
+				intArray.shift()
                 repeatLength += 1;
             }
-            var byte = addBytePadding(repeatLength.toString(2));
+            var byte = addPadding(repeatLength.toString(2), 8);
             byte[0] = 1;
         }
         else {
-            while(intArray.shift() === type && repeatLength < 63) {
+            while(intArray[0] === type && repeatLength < 63) {
+				intArray.shift()
                 repeatLength += 1;
             }
-            var byte = addBytePadding(repeatLength.toString(2));
+            var byte = addPadding(repeatLength.toString(2), 8);
             byte[0] = 0;
             byte[1] = type;
         }
         return parseInt(byte, 2);
     }
 
-    function encodeMiddleBytes() {
-        
+    function encodeMiddleBytes(intArray) {
+		var cellsCompressed = 0;
+		var byteString = "";
+        for(var i = 0; i < intArray.length-cellsCompressed; i++) {
+			if(intArray[i] === 0) {
+				byteString += "00";
+			}
+			else if(intArray[i] === 1) {
+				byteString += "01";
+			}
+			else {
+				byteString += "10";
+			}
+		}
     }
 
     function encodeTrailingByte(intArray) {
         var type = intArray.pop();
         var repeatLength = 0;
         if(type === 0) {
-            while(intArray.pop() === type && repeatLength < 127) {
+            while(intArray[intArray.length-1] === type && repeatLength < 127) {
+				intArray.pop();
                 repeatLength += 1;
             }
-            var byte = addBytePadding(repeatLength.toString(2));
+            var byte = addPadding(repeatLength.toString(2), 8);
             byte[0] = 0;
         }
         else {
-            while(intArray.pop() === type && repeatLength < 63) {
+            while(intArray[intArray.length-1] === type && repeatLength < 63) {
+				intArray.pop();
                 repeatLength += 1;
             }
-            var byte = addBytePadding(repeatLength.toString(2));
+            var byte = addPadding(repeatLength.toString(2), 8);
             byte[0] = 1;
             byte[1] = type-1;
         }
         return parseInt(byte, 2);
     }
 
-    function addBytePadding(binaryString) {
-        var leftOver = binaryString.length % 8;
+    function addPadding(numberString, width) {
+        var leftOver = numberString.length % width;
         if(leftOver === 0) {
-            return binaryString;
+            return numberString;
         }
         else {
-            for(var i = 0; i < (8 - leftOver); i++) {
-                binaryString = "0" + binaryString;
+            for(var i = 0; i < (width - leftOver); i++) {
+                numberString = "0" + numberString;
             }
-            return binaryString;
+            return numberString;
         }
     }
 });
