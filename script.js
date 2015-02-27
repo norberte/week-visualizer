@@ -289,98 +289,172 @@ $(document).ready(function() {                                                  
 					intArray.push(1);
 				}else{
 					intArray.push(0);
-				}; 
-			});		
-		});				
+				};
+			});
+		});	
 		document.getElementById("Output").innerHTML = intArray.join("");
 	}
     
-    //WARNING: Unfinished magic. Will comment the arcane runes below later
+    /***************************************************************************
+    **Encoding
+    */
     
-    function encodeIntArray(intArray) {
-        var tempArray = intArray.slice();
-        var encodedArray = [];
-        var trailingByte = encodeTrailingByte(tempArray);
-        
-        encodedArray.push(encodeLeadingByte(tempArray));
-        encodedArray.concat(encodeMiddleBytes(tempArray));
-        encodedArray.push(trailingByte);
-        
-        return encodedArray;
-    }
+	//The function to actually be used to encode
+	function encodeIntArray(intArray) {
+		//Make a copy of the array so we don't change the input reference
+		var tempArray = intArray.slice();
+		var encodedArray = [];
+		//Encode the first and last bytes first, because encoding both the
+		//leading byte and trailing byte strip the copied array until there is
+		//only the middle left to encode
+		var trailingByte = encodeTrailingByte(tempArray);
+		
+        //Create the encoded array
+        //The "bytes" in this function are in decimal
+		encodedArray.push(encodeLeadingByte(tempArray));
+		encodedArray = encodedArray.concat(encodeMiddleBytes(tempArray));
+		encodedArray.push(trailingByte);
+		
+        //Take each int, change it to character representation
+        //then join into a string and return
+		return encodedArray.map(function(x){return String.fromCharCode(x)}).join("");
+	}
     
-    function encodeLeadingByte(intArray) {
-        var type = intArray.shift();
-        var repeatLength = 0;
-        if(type === 2) {
-            while(intArray[0] === type && repeatLength < 127) {
+    //This is the first byte. The first few bits determine the type (0, 1, or 2)
+    //the rest are a binary number of how many times that type repeats in a row
+	function encodeLeadingByte(intArray) {
+        //shift() returns the first element and removes it from the array
+		var type = intArray.shift();
+        //How many times does type repeat? (Total cells of type = repeats + 1)
+		var repeatLength = 0;
+        //How I chose to encode:
+        //If 1st bit is 1, then the type is 2
+        //use the other 7 for repeatLength
+		if(type === 2) {
+            //Find out how many repeats there are within the max I can store
+			while(intArray[0] === type && repeatLength < 127) {
 				intArray.shift()
-                repeatLength += 1;
-            }
-            var byte = addPadding(repeatLength.toString(2), 8);
-            byte[0] = 1;
-        }
-        else {
-            while(intArray[0] === type && repeatLength < 63) {
+				repeatLength += 1;
+			}
+            //Create byte from the repeatLength
+			var byte = addPadding(repeatLength.toString(2), 8);
+            //Change 0th char to 1 (indicates type is 2, as I've said before)
+			setCharAt(byte, 0, 1);
+		}
+        //If 1st bit is 0, then the type is 0 or 1, encode the 2nd bit
+        //If the 2nd bit is 0, then the type is 0
+        //If the 2nd bit is 1, then the type is 1
+        //use the other 6 for repeatLength
+		else {
+			while(intArray[0] === type && repeatLength < 63) {
 				intArray.shift()
-                repeatLength += 1;
-            }
-            var byte = addPadding(repeatLength.toString(2), 8);
-            byte[0] = 0;
-            byte[1] = type;
-        }
-        return parseInt(byte, 2);
-    }
-
-    function encodeMiddleBytes(intArray) {
+				repeatLength += 1;
+			}
+			var byte = addPadding(repeatLength.toString(2), 8);
+			setCharAt(byte, 0, 0);
+			setCharAt(byte, 1, type);
+		}
+        //Return the decimal form of the byte
+		return parseInt(byte, 2);
+	}
+    
+    //Will explain this part later
+	function encodeMiddleBytes(intArray) {
+		var cellArray = [];
+		var compressibleCellIndexes = [];
 		var cellsCompressed = 0;
-		var byteString = "";
-        for(var i = 0; i < intArray.length-cellsCompressed; i++) {
+		for(var i = 0; i < intArray.length-Math.floor(cellsCompressed); i++) {
 			if(intArray[i] === 0) {
-				byteString += "00";
+				cellArray.push("00");
 			}
 			else if(intArray[i] === 1) {
-				byteString += "01";
+				cellArray.push("01");
 			}
 			else {
-				byteString += "10";
+				cellArray.push("10");
+				compressibleCellIndexes.push(i);
+				cellsCompressed += 0.5;
 			}
 		}
-    }
-
-    function encodeTrailingByte(intArray) {
-        var type = intArray.pop();
-        var repeatLength = 0;
-        if(type === 0) {
-            while(intArray[intArray.length-1] === type && repeatLength < 127) {
+		var cellsToCompress = intArray.slice(intArray.length-Math.floor(cellsCompressed));
+		for(var j = 0; j < cellsToCompress.length; j++) {
+			if(cellsToCompress[j] === 0) {
+				//cellArray[compressibleCellIndexes[j*2]] = "10";
+				//cellArray[compressibleCellIndexes[j*2+1]] = "10";
+			}
+			else if(cellsToCompress[j] === 1) {
+				//cellArray[compressibleCellIndexes[j*2]] = "10";
+				cellArray[compressibleCellIndexes[j*2+1]] = "11";
+			}
+			else {
+				cellArray[compressibleCellIndexes[j*2]] = "11";
+				//cellArray[compressibleCellIndexes[j*2+1]] = "10";
+			}
+		}
+		var byteArray = cellArray.join("").match(/.{1,8}/g);
+		var rightPadding = 0;
+		var leftOver = byteArray[byteArray.length-1].length % 8;
+		if(leftOver !== 0) {
+			rightPadding = 8 - leftOver;
+			for(var k = 0; k < rightPadding; k++) {
+				byteArray[byteArray.length-1] += "0";
+			}
+		}
+		var paddingByte = addPadding(rightPadding.toString(2), 8);
+		byteArray.push(paddingByte);
+		for(var l = 0; l < byteArray.length; l++) {
+			byteArray[l] = parseInt(byteArray[l], 2);
+		}
+		return byteArray;
+	}
+    
+    //Same idea as leading byte, but is last, and repeats go backwards, also
+    //1st bit = 0 means type 0
+    //1st bit = 1 means type 1 or 2, encode the 2nd bit
+    //2nd bit = 0 means type 1
+    //2nd bit = 1 means type 2
+    //The last 7 or 6 bits for repeat length like before
+	function encodeTrailingByte(intArray) {
+        //pop() returns the last element and removes it from the array
+		var type = intArray.pop();
+		var repeatLength = 0;
+		if(type === 0) {
+			while(intArray[intArray.length-1] === type && repeatLength < 127) {
 				intArray.pop();
-                repeatLength += 1;
-            }
-            var byte = addPadding(repeatLength.toString(2), 8);
-            byte[0] = 0;
-        }
-        else {
-            while(intArray[intArray.length-1] === type && repeatLength < 63) {
+				repeatLength += 1;
+			}
+			var byte = addPadding(repeatLength.toString(2), 8);
+			setCharAt(byte, 0, 0);
+		}
+		else {
+			while(intArray[intArray.length-1] === type && repeatLength < 63) {
 				intArray.pop();
-                repeatLength += 1;
-            }
-            var byte = addPadding(repeatLength.toString(2), 8);
-            byte[0] = 1;
-            byte[1] = type-1;
-        }
-        return parseInt(byte, 2);
-    }
-
-    function addPadding(numberString, width) {
-        var leftOver = numberString.length % width;
-        if(leftOver === 0) {
-            return numberString;
-        }
-        else {
-            for(var i = 0; i < (width - leftOver); i++) {
-                numberString = "0" + numberString;
-            }
-            return numberString;
-        }
-    }
+				repeatLength += 1;
+			}
+			var byte = addPadding(repeatLength.toString(2), 8);
+			setCharAt(byte, 0, 1);
+			setCharAt(byte, 0, type-1);
+		}
+		return parseInt(byte, 2);
+	}
+    
+    //Adds left-padding of 0s until the length reaches a multiple of the width
+	function addPadding(numberString, width) {
+		var leftOver = numberString.length % width;
+		if(leftOver === 0) {
+			return numberString;
+		}
+		else {
+			for(var i = 0; i < (width - leftOver); i++) {
+				numberString = "0" + numberString;
+			}
+			return numberString;
+		}
+	}
+    
+    //Replaces the character at the index of a string
+	function setCharAt(str,index,chr) {
+		if(index > str.length-1) return str;
+		return str.substr(0,index) + chr + str.substr(index+1);
+	}
 });
