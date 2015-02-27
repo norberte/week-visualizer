@@ -10,16 +10,6 @@ $(document).ready(function() {                                                  
     var beforeStartHourDefault = "busy";
     var afterEndHourDefault = "";
     
-    //I think the table array should be of bytes not ints
-    //Because we are going to be outputing in ACSII, which is the same size
-    //Essentially 4 table cells will fit into each element of the array
-    //The array stores in decimal you may need to convert from binary to decimal
-    
-    //For the raw 0, 1, 2 values
-    var intArray = [];
-    //I have a new idea for the compression. I should do this part. -Kevin
-    var encodedIntArray = new Uint8Array();
-    
     clipTable();
     
     /***************************************************************************
@@ -121,8 +111,9 @@ $(document).ready(function() {                                                  
     });
     
     //Detects output button press and calls function to make a string.
-    $("#finished").click(function() {       
-        sumTable();
+    $("#finished").click(function() {
+        document.getElementById("output").innerHTML = getIntArray().join("");
+        document.getElementById("compressedOutput").innerHTML = encodeIntArray(getIntArray());
     });
     
     /***************************************************************************
@@ -275,24 +266,20 @@ $(document).ready(function() {                                                  
     //If using chrome right click page and select "inspect Element"
     //this is where you will see the output of the console.log, it 
     //is handy for knowing what order the table is parsed.
-    function sumTable() {
-        intArray = [];
-        $('#week-table tr').each(function () {  
-            console.log("*****************");
-            console.log( "" + this.className);
-            console.log("*****************");
-             $("td", this).each(function(){ 
-                console.log(this.className);
-                if($(this).hasClass("busy")){                   
-                    intArray.push(2);
-                }else if($(this).hasClass("free")){
-                    intArray.push(1);
-                }else{
-                    intArray.push(0);
-                };
-            });
-        }); 
-        document.getElementById("Output").innerHTML = intArray.join("");
+    function getIntArray() {
+        var intArray = [];
+        $('#week-table td').each(function() {  
+            if($(this).hasClass("busy")){                   
+                intArray.push(2);
+            }
+            else if($(this).hasClass("free")){
+                intArray.push(1);
+            }
+            else{
+                intArray.push(0);
+            };
+        });
+        return intArray;
     }
     
     /***************************************************************************
@@ -315,7 +302,7 @@ $(document).ready(function() {                                                  
         encodedArray = encodedArray.concat(encodeMiddleBytes(tempArray));
         encodedArray.push(trailingByte);
         
-        //Take each int, change it to character representation
+        //Take each int, change to character representation
         //then join into a string and return
         return encodedArray.map(function(x){return String.fromCharCode(x)}).join("");
     }
