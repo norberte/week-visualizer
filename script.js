@@ -1,272 +1,272 @@
 $(document).ready(function() {                                                  //jQuery crash course:
-                                                                                //When the document is done loading, do the function(){code}
-    /***************************************************************************
-    **Initialization
-    */
-    
-    //Initialize start and end hours to those selected in the html
-    var startHour = parseInt($("#list_startHour").val());
-    var endHour = parseInt($("#list_endHour").val());
+																				//When the document is done loading, do the function(){code}
+	/***************************************************************************
+	**Initialization
+	*/
+	
+	//Initialize start and end hours to those selected in the html
+	var startHour = parseInt($("#list_startHour").val());
+	var endHour = parseInt($("#list_endHour").val());
 	var beforeStartHourDefault = "busy";
 	var afterEndHourDefault = "";
-    
-    //I think the table array should be of bytes not ints
-    //Because we are going to be outputing in ACSII, which is the same size
-    //Essentially 4 table cells will fit into each element of the array
-    //The array stores in decimal you may need to convert from binary to decimal
+	
+	//I think the table array should be of bytes not ints
+	//Because we are going to be outputing in ACSII, which is the same size
+	//Essentially 4 table cells will fit into each element of the array
+	//The array stores in decimal you may need to convert from binary to decimal
 	
 	//For the raw 0, 1, 2 values
 	var intArray = [];
 	//I have a new idea for the compression. I should do this part. -Kevin
-    var encodedIntArray = new Uint8Array();
-    
-    clipTable();
-    
-    /***************************************************************************
-    **Events
-    */
-    
-	//Disable context menu and apply classes
-    $("#week-table tr td").on("contextmenu", function() {                       //$("Element to do stuff on").on("Event to trigger function", function(){code});
-        $(this).removeClass("free busy");                                       //this = "#week-table tr td", remove both free and busy classes
-        return false;                                                           //return false removes the right-click menu
-    });
+	var encodedIntArray = new Uint8Array();
 	
-    //Constrain the start and end hours to sensible values
-    //Then update the table to reflect the changes
-    $("#list_startHour").change(function() {                                    //When the value property of #list_startHour changes, do function(){code}
-        startHour = parseInt($(this).val());                                    //this.val() = The selected value of the element
-        if(endHour < startHour) {
-            endHour = startHour;
-            $("#list_endHour").val(startHour);                                  //this.val(foo) = Set the selected value to foo
-        }
-        clipTable();
-    });
-    $("#list_endHour").change(function() {
-        endHour = parseInt($(this).val());
-        if(startHour > endHour) {
-            startHour = endHour;
-            $("#list_startHour").val(endHour);
-        }
-        clipTable();
-    });
-    
-    //Show or hide the weekend columns
-    $("#cb_weekend").change(function() {                                        //When the checkbox #cb_weekend changes
-        if($("#cb_weekend").prop("checked")) {                                  //If the property checked is true
-            showColumn(6);
-            showColumn(7);
-        }
-        else {
-            hideColumn(6);
-            hideColumn(7);
-            setColumnClass(6, "busy");
-            setColumnClass(7, "busy");
-        }
-    });
-    
-    //Show or hide the second half of each hour
-    $("#cb_showHalfHour").change(function() {
-        if($("#cb_showHalfHour").prop("checked")) {
-            showHalfHours();
-            clipTable();
-        }
-        else {
-            hideHalfHours();
-        }
-    });
+	clipTable();
+	
+	/***************************************************************************
+	**Events
+	*/
+	
+	//Disable context menu and apply classes
+	$("#week-table tr td").on("contextmenu", function() {                       //$("Element to do stuff on").on("Event to trigger function", function(){code});
+		$(this).removeClass("free busy");                                       //this = "#week-table tr td", remove both free and busy classes
+		return false;                                                           //return false removes the right-click menu
+	});
+	
+	//Constrain the start and end hours to sensible values
+	//Then update the table to reflect the changes
+	$("#list_startHour").change(function() {                                    //When the value property of #list_startHour changes, do function(){code}
+		startHour = parseInt($(this).val());                                    //this.val() = The selected value of the element
+		if(endHour < startHour) {
+			endHour = startHour;
+			$("#list_endHour").val(startHour);                                  //this.val(foo) = Set the selected value to foo
+		}
+		clipTable();
+	});
+	$("#list_endHour").change(function() {
+		endHour = parseInt($(this).val());
+		if(startHour > endHour) {
+			startHour = endHour;
+			$("#list_startHour").val(endHour);
+		}
+		clipTable();
+	});
+	
+	//Show or hide the weekend columns
+	$("#cb_weekend").change(function() {                                        //When the checkbox #cb_weekend changes
+		if($("#cb_weekend").prop("checked")) {                                  //If the property checked is true
+			showColumn(6);
+			showColumn(7);
+		}
+		else {
+			hideColumn(6);
+			hideColumn(7);
+			setColumnClass(6, "busy");
+			setColumnClass(7, "busy");
+		}
+	});
+	
+	//Show or hide the second half of each hour
+	$("#cb_showHalfHour").change(function() {
+		if($("#cb_showHalfHour").prop("checked")) {
+			showHalfHours();
+			clipTable();
+		}
+		else {
+			hideHalfHours();
+		}
+	});
 	
 	//Update the table if a default is changed
 	$("span.radGroup_default input:radio").change(function(){
 		clipTable();
 	});
-    
-    //Reset to free button
-    $("#btn_resetFree").click(function() {                                      //When "#btn_resetFree" is clicked do function(){code}
-        resetTable("free");
-    });
-    
-    //Reset to busy button
-    $("#btn_resetBusy").click(function() {
-        resetTable("busy");
-    });
-    
-    //Reset button
-    $("#btn_reset").click(function() {
-        resetTable();
-    });
-    
-    //Ability to select free times, busy times, and reset
-    $("#week-table tr td").click(function(event) {                          
-        switch (event.which) {                                                  //event.which returns the value of the mouseclick in this case
-            //Left mouse
-            case 1:
-                //If green toggle one, otherwise toggle both
-                if(!$(this).hasClass("free") && !$(this).hasClass("busy")) {    //hasClass returns true if the element has the specified class
-                    $(this).toggleClass("free");                                //Self explanatory
-                }
-                else {
-                    $(this).toggleClass("free");
-                    $(this).toggleClass("busy");
-                }
-                break;
-            //Middle mouse. Unused
-            case 2:
-                break;
-            //Right mouse. Handled at top of section to disable the context menu
-            case 3:
-                break;
-            default:
-        }
-    });
+	
+	//Reset to free button
+	$("#btn_resetFree").click(function() {                                      //When "#btn_resetFree" is clicked do function(){code}
+		resetTable("free");
+	});
+	
+	//Reset to busy button
+	$("#btn_resetBusy").click(function() {
+		resetTable("busy");
+	});
+	
+	//Reset button
+	$("#btn_reset").click(function() {
+		resetTable();
+	});
+	
+	//Ability to select free times, busy times, and reset
+	$("#week-table tr td").click(function(event) {                          
+		switch (event.which) {                                                  //event.which returns the value of the mouseclick in this case
+			//Left mouse
+			case 1:
+				//If green toggle one, otherwise toggle both
+				if(!$(this).hasClass("free") && !$(this).hasClass("busy")) {    //hasClass returns true if the element has the specified class
+					$(this).toggleClass("free");                                //Self explanatory
+				}
+				else {
+					$(this).toggleClass("free");
+					$(this).toggleClass("busy");
+				}
+				break;
+			//Middle mouse. Unused
+			case 2:
+				break;
+			//Right mouse. Handled at top of section to disable the context menu
+			case 3:
+				break;
+			default:
+		}
+	});
 	
 	//Detects output button press and calls function to make a string.
-	$("#finished").click(function() {		
+	$("#finished").click(function() {       
 		sumTable();
 	});
-    
-    /***************************************************************************
-    **Functions
-    */
-    
-    function resetTable() {
-        for(var n = 0; n <= 23; n++) {
-            if(n < startHour) {
-                setHourClass(n, getRadioGroupVal("startCutoffDefault"));
-            }
-            else if(endHour < n) {
+	
+	/***************************************************************************
+	**Functions
+	*/
+	
+	function resetTable() {
+		for(var n = 0; n <= 23; n++) {
+			if(n < startHour) {
+				setHourClass(n, getRadioGroupVal("startCutoffDefault"));
+			}
+			else if(endHour < n) {
 				setHourClass(n, getRadioGroupVal("endCutoffDefault"));
-            }
+			}
 			else {
 				removeHourClasses(n);
 			}
-        }
-    }
-    
-    function resetTable(htmlClass) {
-        for(var n = 0; n <= 23; n++) {
-            if(n < startHour) {
-                setHourClass(n, getRadioGroupVal("startCutoffDefault"));
-            }
-            else if(endHour < n) {
+		}
+	}
+	
+	function resetTable(htmlClass) {
+		for(var n = 0; n <= 23; n++) {
+			if(n < startHour) {
+				setHourClass(n, getRadioGroupVal("startCutoffDefault"));
+			}
+			else if(endHour < n) {
 				setHourClass(n, getRadioGroupVal("endCutoffDefault"));
-            }
+			}
 			else {
 				setHourClass(n, htmlClass);
 			}
-        }
-    }
-    
-    //Hide the rows not within the start and end times
-    function clipTable() {
-        for(var n = 0; n <= 23; n++) {
-            if(n < startHour) {
+		}
+	}
+	
+	//Hide the rows not within the start and end times
+	function clipTable() {
+		for(var n = 0; n <= 23; n++) {
+			if(n < startHour) {
 				hideHour(n);
-                setHourClass(n, getRadioGroupVal("startCutoffDefault"));
-            }
-            else if(endHour < n) {
+				setHourClass(n, getRadioGroupVal("startCutoffDefault"));
+			}
+			else if(endHour < n) {
 				hideHour(n);
 				setHourClass(n, getRadioGroupVal("endCutoffDefault"));
-            }
+			}
 			else {
 				showHour(n);
 			}
-        }
-        // Hide the half hours if the relevant checkbox is checked
-        if(!$("#cb_showHalfHour").prop("checked")) {
-            hideHalfHours();
-        }
-    }
+		}
+		// Hide the half hours if the relevant checkbox is checked
+		if(!$("#cb_showHalfHour").prop("checked")) {
+			hideHalfHours();
+		}
+	}
 	
 	//Get the value from a group of radio buttons by name
 	function getRadioGroupVal(name) {
 		return $('input:radio[name="' + name + '"]:checked').val();
 	}
-    
-    //Show and hide rows
-    function showRow(n) {
-        $("#week-table tr.hour:eq(" + n + ")").show();                          //If hidden, reveal the element. :eq(n) means select the nth matched element
-    }
-    function hideRow(n) {
-        $("#week-table tr.hour:eq(" + n + ")").hide();                          //If visible, hide the element (actually takes up no space, not just invisible)
-    }
-    
-    //Show and hide columns
-    function showColumn(m) {
-        $("#week-table tr *:nth-child(" + (m+1) + ")").show(); //(m+1) to keep things 0 index based. For some reason :eq is not working.
-    }
-    function hideColumn(m) {
-        $("#week-table tr *:nth-child(" + (m+1) + ")").hide();                  //:nth-child() is like :eq(), but gives the index including non-matched siblings
-    }
-    
-    //Show and hide full hours
-    function showHour(n) {
-        $("#week-table tr.hour_" + n).show();
-    }
-    function hideHour(n) {
-        $("#week-table tr.hour_" + n).hide();
-    }
-    
-    //Show and hide all half hours
-    function showHalfHours() {
-        $("#week-table tr.half").show();
-    }
-    function hideHalfHours() {
-        $("#week-table tr.half").hide();
-        $("#week-table tr.half td").removeClass("free busy");
-        /*
-        **TODO: For every first half of the hour with class
-        **Add same class to second half of the hour.
-        **E.g. Set 1:00 as busy, hide half hours. Now the 1:00-1:30 block
-        **is set, but the 1:30-2:00 block is not. This is bad. In the
-        **"full hour" mode, a selection should cover 1:00-2:00.
-        */
-    }
-    
-    //Set and remove classes for rows
-    function setRowClass(n, htmlClass) {
-        removeRowClasses(n);
+	
+	//Show and hide rows
+	function showRow(n) {
+		$("#week-table tr.hour:eq(" + n + ")").show();                          //If hidden, reveal the element. :eq(n) means select the nth matched element
+	}
+	function hideRow(n) {
+		$("#week-table tr.hour:eq(" + n + ")").hide();                          //If visible, hide the element (actually takes up no space, not just invisible)
+	}
+	
+	//Show and hide columns
+	function showColumn(m) {
+		$("#week-table tr *:nth-child(" + (m+1) + ")").show(); //(m+1) to keep things 0 index based. For some reason :eq is not working.
+	}
+	function hideColumn(m) {
+		$("#week-table tr *:nth-child(" + (m+1) + ")").hide();                  //:nth-child() is like :eq(), but gives the index including non-matched siblings
+	}
+	
+	//Show and hide full hours
+	function showHour(n) {
+		$("#week-table tr.hour_" + n).show();
+	}
+	function hideHour(n) {
+		$("#week-table tr.hour_" + n).hide();
+	}
+	
+	//Show and hide all half hours
+	function showHalfHours() {
+		$("#week-table tr.half").show();
+	}
+	function hideHalfHours() {
+		$("#week-table tr.half").hide();
+		$("#week-table tr.half td").removeClass("free busy");
+		/*
+		**TODO: For every first half of the hour with class
+		**Add same class to second half of the hour.
+		**E.g. Set 1:00 as busy, hide half hours. Now the 1:00-1:30 block
+		**is set, but the 1:30-2:00 block is not. This is bad. In the
+		**"full hour" mode, a selection should cover 1:00-2:00.
+		*/
+	}
+	
+	//Set and remove classes for rows
+	function setRowClass(n, htmlClass) {
+		removeRowClasses(n);
 		//If string is not empty
 		if(htmlClass) {
 			$("#week-table tr.hour:eq(" + n + ") td").addClass(htmlClass);
 		}
-    }
-    function removeRowClasses(n, htmlClasses) {
-        $("#week-table tr.hour:eq(" + n + ") td").removeClass(htmlClasses);
-    }
-    function removeRowClasses(n) {
-        $("#week-table tr.hour:eq(" + n + ") td").removeClass("free busy");
-    }
-    
-    //Set and remove classes for columns
-    function setColumnClass(m, htmlClass) {
-        removeColumnClasses(m);
+	}
+	function removeRowClasses(n, htmlClasses) {
+		$("#week-table tr.hour:eq(" + n + ") td").removeClass(htmlClasses);
+	}
+	function removeRowClasses(n) {
+		$("#week-table tr.hour:eq(" + n + ") td").removeClass("free busy");
+	}
+	
+	//Set and remove classes for columns
+	function setColumnClass(m, htmlClass) {
+		removeColumnClasses(m);
 		//If string is not empty
 		if(htmlClass) {
 			$("#week-table tr td:nth-child(" + (m+1) + ")").addClass(htmlClass);
 		}
-    }
-    function removeColumnClasses(m, htmlClasses) {
-        $("#week-table tr td:nth-child(" + (m+1) + ")").removeClass(htmlClasses);
-    }
-    function removeColumnClasses(m) {
-        $("#week-table tr td:nth-child(" + (m+1) + ")").removeClass("free busy");
-    }
-    
-    //Set and remove classes for full hours
-    function setHourClass(n, htmlClass) {
+	}
+	function removeColumnClasses(m, htmlClasses) {
+		$("#week-table tr td:nth-child(" + (m+1) + ")").removeClass(htmlClasses);
+	}
+	function removeColumnClasses(m) {
+		$("#week-table tr td:nth-child(" + (m+1) + ")").removeClass("free busy");
+	}
+	
+	//Set and remove classes for full hours
+	function setHourClass(n, htmlClass) {
 		removeHourClasses(n);
 		//If string is not empty
 		if(htmlClass) {
 			$("#week-table tr.hour_" + n + " td").addClass(htmlClass);
 		}
-    }
-    function removeHourClasses(n, htmlClasses) {
-        $("#week-table tr.hour_" + n + " td").removeClass(htmlClasses);
-    }
-    function removeHourClasses(n) {
-        $("#week-table tr.hour_" + n + " td").removeClass("free busy");
-    }
+	}
+	function removeHourClasses(n, htmlClasses) {
+		$("#week-table tr.hour_" + n + " td").removeClass(htmlClasses);
+	}
+	function removeHourClasses(n) {
+		$("#week-table tr.hour_" + n + " td").removeClass("free busy");
+	}
 	
 	//Makes Giant-ass string of mostly 0s, with a few 1s and 2s
 	//Function loops through entire table, so it includes all cells
@@ -277,13 +277,13 @@ $(document).ready(function() {                                                  
 	//is handy for knowing what order the table is parsed.
 	function sumTable() {
 		intArray = [];
-		$('#week-table tr').each(function () {	
+		$('#week-table tr').each(function () {  
 			console.log("*****************");
 			console.log( "" + this.className);
 			console.log("*****************");
-			 $("td", this).each(function(){	
+			 $("td", this).each(function(){ 
 				console.log(this.className);
-				if($(this).hasClass("busy")){					
+				if($(this).hasClass("busy")){                   
 					intArray.push(2);
 				}else if($(this).hasClass("free")){
 					intArray.push(1);
@@ -291,14 +291,14 @@ $(document).ready(function() {                                                  
 					intArray.push(0);
 				};
 			});
-		});	
+		}); 
 		document.getElementById("Output").innerHTML = intArray.join("");
 	}
-    
-    /***************************************************************************
-    **Encoding
-    */
-    
+	
+	/***************************************************************************
+	**Encoding
+	*/
+	
 	//The function to actually be used to encode
 	function encodeIntArray(intArray) {
 		//Make a copy of the array so we don't change the input reference
@@ -309,56 +309,56 @@ $(document).ready(function() {                                                  
 		//only the middle left to encode
 		var trailingByte = encodeTrailingByte(tempArray);
 		
-        //Create the encoded array
-        //The "bytes" in this function are in decimal
+		//Create the encoded array
+		//The "bytes" in this function are in decimal
 		encodedArray.push(encodeLeadingByte(tempArray));
 		encodedArray = encodedArray.concat(encodeMiddleBytes(tempArray));
 		encodedArray.push(trailingByte);
 		
-        //Take each int, change it to character representation
-        //then join into a string and return
+		//Take each int, change it to character representation
+		//then join into a string and return
 		return encodedArray.map(function(x){return String.fromCharCode(x)}).join("");
 	}
-    
-    //This is the first byte. The first few bits determine the type (0, 1, or 2)
-    //the rest are a binary number of how many times that type repeats in a row
+
+	//This is the first byte. The first few bits determine the type (0, 1, or 2)
+	//the rest are a binary number of how many times that type repeats in a row
 	function encodeLeadingByte(intArray) {
-        //shift() returns the first element and removes it from the array
+		//shift() returns the first element and removes it from the array
 		var type = intArray.shift();
-        //How many times does type repeat? (Total cells of type = repeats + 1)
+		//How many times does type repeat? (Total cells of type = repeats + 1)
 		var repeatLength = 0;
-        //How I chose to encode:
-        //If 1st bit is 1, then the type is 2
-        //use the other 7 for repeatLength
+		//How I chose to encode:
+		//If 1st bit is 1, then the type is 2
+		//use the other 7 for repeatLength
 		if(type === 2) {
-            //Find out how many repeats there are within the max I can store
+			//Find out how many repeats there are within the max I can store
 			while(intArray[0] === type && repeatLength < 127) {
 				intArray.shift()
 				repeatLength += 1;
 			}
-            //Create byte from the repeatLength
+			//Create byte from the repeatLength
 			var byte = addPadding(repeatLength.toString(2), 8);
-            //Change 0th char to 1 (indicates type is 2, as I've said before)
-			setCharAt(byte, 0, 1);
+			//Change 0th char to 1 (indicates type is 2, as I've said before)
+			byte = setCharAt(byte, 0, 1);
 		}
-        //If 1st bit is 0, then the type is 0 or 1, encode the 2nd bit
-        //If the 2nd bit is 0, then the type is 0
-        //If the 2nd bit is 1, then the type is 1
-        //use the other 6 for repeatLength
+		//If 1st bit is 0, then the type is 0 or 1, encode the 2nd bit
+		//If the 2nd bit is 0, then the type is 0
+		//If the 2nd bit is 1, then the type is 1
+		//use the other 6 for repeatLength
 		else {
 			while(intArray[0] === type && repeatLength < 63) {
 				intArray.shift()
 				repeatLength += 1;
 			}
 			var byte = addPadding(repeatLength.toString(2), 8);
-			setCharAt(byte, 0, 0);
-			setCharAt(byte, 1, type);
+			byte = setCharAt(byte, 0, 0);
+			byte = setCharAt(byte, 1, type);
 		}
-        //Return the decimal form of the byte
+		//Return the decimal form of the byte
 		return parseInt(byte, 2);
 	}
-    
-    //Will explain this part later
+
+	//Will explain this part later
 	function encodeMiddleBytes(intArray) {
 		var cellArray = [];
 		var compressibleCellIndexes = [];
@@ -407,15 +407,15 @@ $(document).ready(function() {                                                  
 		}
 		return byteArray;
 	}
-    
-    //Same idea as leading byte, but is last, and repeats go backwards, also
-    //1st bit = 0 means type 0
-    //1st bit = 1 means type 1 or 2, encode the 2nd bit
-    //2nd bit = 0 means type 1
-    //2nd bit = 1 means type 2
-    //The last 7 or 6 bits for repeat length like before
+
+	//Same idea as leading byte, but is last, and repeats go backwards, also
+	//1st bit = 0 means type 0
+	//1st bit = 1 means type 1 or 2, encode the 2nd bit
+	//2nd bit = 0 means type 1
+	//2nd bit = 1 means type 2
+	//The last 7 or 6 bits for repeat length like before
 	function encodeTrailingByte(intArray) {
-        //pop() returns the last element and removes it from the array
+		//pop() returns the last element and removes it from the array
 		var type = intArray.pop();
 		var repeatLength = 0;
 		if(type === 0) {
@@ -424,7 +424,7 @@ $(document).ready(function() {                                                  
 				repeatLength += 1;
 			}
 			var byte = addPadding(repeatLength.toString(2), 8);
-			setCharAt(byte, 0, 0);
+			byte = setCharAt(byte, 0, 0);
 		}
 		else {
 			while(intArray[intArray.length-1] === type && repeatLength < 63) {
@@ -432,13 +432,14 @@ $(document).ready(function() {                                                  
 				repeatLength += 1;
 			}
 			var byte = addPadding(repeatLength.toString(2), 8);
-			setCharAt(byte, 0, 1);
-			setCharAt(byte, 0, type-1);
+			byte = setCharAt(byte, 0, 1);
+			byte = setCharAt(byte, 1, type-1);
 		}
+		console.log(byte);
 		return parseInt(byte, 2);
 	}
-    
-    //Adds left-padding of 0s until the length reaches a multiple of the width
+
+	//Adds left-padding of 0s until the length reaches a multiple of the width
 	function addPadding(numberString, width) {
 		var leftOver = numberString.length % width;
 		if(leftOver === 0) {
@@ -451,8 +452,8 @@ $(document).ready(function() {                                                  
 			return numberString;
 		}
 	}
-    
-    //Replaces the character at the index of a string
+
+	//Replaces the character at the index of a string
 	function setCharAt(str,index,chr) {
 		if(index > str.length-1) return str;
 		return str.substr(0,index) + chr + str.substr(index+1);
