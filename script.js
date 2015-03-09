@@ -283,7 +283,58 @@ $(document).ready(function() {                                                  
     }
     
     /***************************************************************************
-    **Encoding
+    **Heatmap functions
+    */
+    
+    function fractionToColor(n) {
+        // -1 = #ff0000 Red
+        //-.5 = #ffff00 Yellow
+        //  0 = #00ff00 Green
+        //0.5 = #00ffff Cyan
+        //  1 = #0000ff Blue
+        //There may be a more mathematically clean way to do this.
+        if(-1.0 <= n && n <= -0.5) {
+            //Color value from 0-255
+            var green = Math.floor((n+1)*2*255);
+            var hex = green.toString(16);
+            //Pad the result to a width of 2
+            hex = ("00" + hex).substring(hex.length);
+            return "#ff" + hex + "00";
+        }
+        else if(n <= 0.0) {
+            var red = Math.floor(n*(-2)*255);
+            var hex = red.toString(16);
+            hex = ("00" + hex).substring(hex.length);
+            return "#" + hex + "ff00";
+        }
+        else if(n <= 0.5) {
+            var blue = Math.floor(n*2*255);
+            var hex = blue.toString(16);
+            hex = ("00" + hex).substring(hex.length);
+            return "#00ff" + hex;
+        }
+        else if(n <= 1.0) {
+            var green = Math.floor((n-1)*(-2)*255);
+            var hex = green.toString(16);
+            hex = ("00" + hex).substring(hex.length);
+            return "#00" + hex + "ff";
+        }
+        else {
+            return "#ffffff"
+        }
+    }
+    
+    function ci_lower_bound(pos, total) {
+        if(total === 0) {
+            return 0;
+        }
+        var z = 1.96;
+        var ratio = pos/total;
+        return (ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total)
+    }
+    
+    /***************************************************************************
+    **Encoding & Decoding functions
     */
     
     //The function to actually be used to encode
@@ -305,6 +356,10 @@ $(document).ready(function() {                                                  
         //Take each int, add 256 to avoid invisible characters like newline,
         //change to character representation then join into a string and return
         return encodedArray.map(function(x){return String.fromCharCode(x+256)}).join("");
+    }
+    
+    decodeString(string) {
+        
     }
 
     //This is the first byte. The first few bits determine the type (0, 1, or 2)
@@ -343,6 +398,10 @@ $(document).ready(function() {                                                  
         }
         //Return the decimal form of the byte
         return parseInt(byte, 2);
+    }
+    
+    decodeLeadingByte(leadingByte) {
+        
     }
 
     //Will explain this part later
@@ -394,6 +453,10 @@ $(document).ready(function() {                                                  
         }
         return byteArray;
     }
+    
+    decodeMiddleBytes(byteArray) {
+        
+    }
 
     //Same idea as leading byte, but is last, and repeats go backwards, also
     //1st bit = 0 means type 0
@@ -424,6 +487,10 @@ $(document).ready(function() {                                                  
         }
         console.log(byte);
         return parseInt(byte, 2);
+    }
+    
+    decodeLeadingByte(leadingByte) {
+        
     }
 
     //Adds left-padding of 0s until the length reaches a multiple of the width
