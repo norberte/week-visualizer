@@ -1,8 +1,8 @@
-#week-table {
+#week-table, #heat-table {
     width: 100%;
 }
 
-#week-table tr td {
+#week-table tr td, #heat-table tr td {
     background-color: green;
     width: 10000px; /*Should find a better way to evenly distribute the columns*/
     
@@ -21,7 +21,7 @@
     background-color: red;
 }
 
-#week-container {
+#week-container, #heat-container{
     clear: both;
 }
 
