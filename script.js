@@ -358,7 +358,7 @@ $(document).ready(function() {                                                  
         return encodedArray.map(function(x){return String.fromCharCode(x+256)}).join("");
     }
     
-    decodeString(string) {
+    function decodeString(string) {
         
     }
 
@@ -400,7 +400,7 @@ $(document).ready(function() {                                                  
         return parseInt(byte, 2);
     }
     
-    decodeLeadingByte(leadingByte) {
+    function decodeLeadingByte(leadingByte) {
         
     }
 
@@ -454,7 +454,7 @@ $(document).ready(function() {                                                  
         return byteArray;
     }
     
-    decodeMiddleBytes(byteArray) {
+    function decodeMiddleBytes(byteArray) {
         
     }
 
@@ -489,7 +489,7 @@ $(document).ready(function() {                                                  
         return parseInt(byte, 2);
     }
     
-    decodeLeadingByte(leadingByte) {
+    function decodeLeadingByte(leadingByte) {
         
     }
 
