@@ -489,7 +489,7 @@ $(document).ready(function() {                                                  
         return parseInt(byte, 2);
     }
     
-    function decodeLeadingByte(leadingByte) {
+    function decodeTrailingByte(trailingByte) {
         
     }
 
