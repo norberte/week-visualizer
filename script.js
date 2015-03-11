@@ -331,13 +331,13 @@ $(document).ready(function() {                                                  
         }
         var z = 1.96;
         var ratio = pos/total;
-        return (ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total)
+        return (ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total);
     }
 	
 	function getScoreArray(tableString) {
-		var finalArray = {};
+		var finalArray = [];
 		for( var k = 0; k < 336; k++) {
-			finalArray.push({0,0});
+			finalArray.push([0,0]);
 		}
 		
 		for( var i = 0; i < tableString.length; i++) {
@@ -351,7 +351,7 @@ $(document).ready(function() {                                                  
 		}
 		
 		for( var i = 0; i < finalArray.length; i++) {
-			finalArray[i] = ci_lower_bound(finalArray[i][0], finalArray[i][1])
+			finalArray[i] = ci_lower_bound(finalArray[i][0], finalArray[i][1]);
 		}
 		
 		return finalArray;
