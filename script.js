@@ -331,7 +331,7 @@ $(document).ready(function() {                                                  
         }
         var z = 1.96;
         var ratio = pos/total;
-        return (ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total)
+        return (ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total);
     }
 	
 	function getScoreArray(tableString) {
