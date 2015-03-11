@@ -39,4 +39,5 @@ https://api.jquery.com/
 
 HTML page changes - We talked about making a radio-button control the interface, whether or not it shows the heat-map or the user’s schedule. The way it looked until now is the basic interface and when we will change it, we will remove all of the settings from the top left corner and add a text-area with a button that says add. This was we can add compressed codes into the system and the data represented by the code will be added into the heat-map by clicking Create Heatmap.
 
-# Interesting video : http://youtu.be/xFFs9UgOAlE ( Mark Zuckerberg talking at a Comp. Science lecture in 2005, before Facebook was a huge thing... someone please post this on the our Facebook page...I do not have an account)
+# Interesting video : http://youtu.be/xFFs9UgOAlE 
+( Mark Zuckerberg talking at a Comp. Science lecture in 2005, before Facebook was a huge thing... someone please post this on the our Facebook page...I do not have an account)
