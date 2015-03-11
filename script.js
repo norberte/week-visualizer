@@ -324,7 +324,8 @@ $(document).ready(function() {                                                  
         }
     }
     
-    function ci_lower_bound(pos, total) {
+    function ci_lower_bound(pos, neg) {
+        total = pos + neg;
         if(total === 0) {
             return 0;
         }
