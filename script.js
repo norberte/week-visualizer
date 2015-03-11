@@ -333,6 +333,54 @@ $(document).ready(function() {                                                  
         var ratio = pos/total;
         return (ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total)
     }
+	
+	function getScoreArray(tableString) {
+		var finalArray = {};
+		for( var k = 0; k < 336; k++) {
+			finalArray.push({0,0});
+		}
+		
+		for( var i = 0; i < tableString.length; i++) {
+			for( var j = 0; j < 336; j++) {
+				if(tableString[i] === 1){
+					finalArray[i][0]++;
+				} else if (tableString[i] === 2){
+					finalArray[i][1]++;
+				}
+			}
+		}
+		
+		for( var i = 0; i < finalArray.length; i++) {
+			finalArray[i] = ci_lower_bound(finalArray[i][0], finalArray[i][1])
+		}
+		
+		return finalArray;
+	}
+	
+	function createHeatmap(scoreArray){
+		var min = scoreArray[0];
+		var max = scoreArray[0];
+		
+		for(int x = 1; x < scoreArray.length ; x++){
+			if (scoreArray[x] > max){
+				max = scoreArray[x];
+			}
+			
+			if (scoreArray[x] < min){
+				min = scoreArray[x];
+			}
+		}
+		
+		for(int x = 0; x < scoreArray.length ; x++){
+			scoreArray[x] = (scoreArray[x] - 1 - min) * (2 / (max - min));
+		}
+		
+		var index = 0;
+		$('#heat-table td').each(function() {  
+            $(this).css("background-color", fractionToColor(scoreArray[index]) )
+			index++;
+        });
+	}
     
     /***************************************************************************
     **Encoding & Decoding functions
