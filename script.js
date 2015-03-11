@@ -377,7 +377,7 @@ $(document).ready(function() {                                                  
 		
 		var index = 0;
 		$('#heat-table td').each(function() {  
-            $(this).css("background-color", fractionToColor(scoreArray[index]) )
+            $(this).css("background-color", fractionToColor(scoreArray[index]) );
 			index++;
         });
 	}
