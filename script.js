@@ -335,23 +335,23 @@ $(document).ready(function() {                                                  
     }
 	
 	function getScoreArray(tableString) {
-		var finalArray = {};
+		var finalArray = [];
 		for( var k = 0; k < 336; k++) {
-			finalArray.push({0,0});
+			finalArray.push([0,0]);
 		}
 		
 		for( var i = 0; i < tableString.length; i++) {
 			for( var j = 0; j < 336; j++) {
-				if(tableString[i] === 1){
+				if(tableString[i] == 1){
 					finalArray[i][0]++;
-				} else if (tableString[i] === 2){
+				} else if (tableString[i] == 2){
 					finalArray[i][1]++;
 				}
 			}
 		}
 		
 		for( var i = 0; i < finalArray.length; i++) {
-			finalArray[i] = ci_lower_bound(finalArray[i][0], finalArray[i][1])
+			finalArray[i] = ci_lower_bound(finalArray[i][0], finalArray[i][1]);
 		}
 		
 		return finalArray;
@@ -361,23 +361,23 @@ $(document).ready(function() {                                                  
 		var min = scoreArray[0];
 		var max = scoreArray[0];
 		
-		for(int x = 1; x < scoreArray.length ; x++){
-			if (scoreArray[x] > max){
+		for(int x = 1; x < scoreArray.length; x++){
+			if(scoreArray[x] > max){
 				max = scoreArray[x];
 			}
 			
-			if (scoreArray[x] < min){
+			if(scoreArray[x] < min){
 				min = scoreArray[x];
 			}
 		}
 		
-		for(int x = 0; x < scoreArray.length ; x++){
+		for(int x = 0; x < scoreArray.length; x++){
 			scoreArray[x] = (scoreArray[x] - 1 - min) * (2 / (max - min));
 		}
 		
 		var index = 0;
 		$('#heat-table td').each(function() {  
-            $(this).css("background-color", fractionToColor(scoreArray[index]) )
+            $(this).css("background-color", fractionToColor(scoreArray[index]));
 			index++;
         });
 	}
