@@ -86,6 +86,12 @@ $(document).ready(function() {                                                  
         resetTable();
     });
     
+    //Create heat map button
+    $("#btn_createHeatmap").click(function() {
+        var input = $("#txta_input").val();
+        createHeatMap(getScoreArray(parseString(input)));
+    });
+    
     //Ability to select free times, busy times, and reset
     $("#week-table tr td").click(function(event) {                          
         switch (event.which) {                                                  //event.which returns the value of the mouseclick in this case
@@ -187,7 +193,7 @@ $(document).ready(function() {                                                  
         $("#week-table tr *:nth-child(" + (m+1) + ")").show(); //(m+1) to keep things 0 index based. For some reason :eq is not working.
     }
     function hideColumn(m) {
-        $("#week-table tr *:nth-child(" + (m+1) + ")").hide();                  //:nth-child() is like :eq(), but gives the index including non-matched siblings
+        $("#week-table tr *:nth-child(" + (m+1) + ")").hide();                  //:nth-child() is like :eq(), but don't mix them up. Check out the official docs
     }
     
     //Show and hide full hours
@@ -292,7 +298,7 @@ $(document).ready(function() {                                                  
         //  0 = #00ff00 Green
         //0.5 = #00ffff Cyan
         //  1 = #0000ff Blue
-        //There may be a more mathematically clean way to do this.
+        //There may be a more mathematically clean way to do this
         if(-1.0 <= n && n <= -0.5) {
             //Color value from 0-255
             var green = Math.floor((n+1)*2*255);
@@ -324,6 +330,11 @@ $(document).ready(function() {                                                  
         }
     }
     
+    //May be redundant, but gonna keep this method here just incase
+    function parseString(string) {
+        return string.split(",");
+    }
+    
     //"How Not to Sort by Average Rating" function
     function notAverage(pos, neg) {
         var total = pos + neg;
@@ -336,7 +347,7 @@ $(document).ready(function() {                                                  
     }
 	
     //Takes an array of sets of table info (0, 1, and 2s. Can be an array of arrays or an array of strings)
-    //Returns the score for each cell
+    //Returns an array filled with the score for each cell
 	function getScoreArray(decodedInputsArray) {
         //Initialize output array
         //Each element is an array of length 2
@@ -381,7 +392,9 @@ $(document).ready(function() {                                                  
 		
         //Translate and stretch the scores to fully fit the range of [-1, 1]
 		for(var x = 0; x < scoreArray.length; x++) {
-			scoreArray[x] = (scoreArray[x] - 1 - min) * (2 / (max - min));
+            console.log("Before: " + scoreArray[x]);
+			scoreArray[x] = (scoreArray[x] - min) * (2 / (max - min)) - 1;
+            console.log("After : " + scoreArray[x]);
 		}
 		
         //Set the color of each cell to the respective transformed score
@@ -544,7 +557,6 @@ $(document).ready(function() {                                                  
             byte = setCharAt(byte, 0, 1);
             byte = setCharAt(byte, 1, type-1);
         }
-        console.log(byte);
         return parseInt(byte, 2);
     }
     
