@@ -324,7 +324,8 @@ $(document).ready(function() {                                                  
         }
     }
     
-    function ci_lower_bound(pos, neg) {
+    //"How Not to Sort by Average Rating" function
+    function notAverage(pos, neg) {
         var total = pos + neg;
         if(total === 0) {
             return 0;
@@ -334,24 +335,27 @@ $(document).ready(function() {                                                  
         return (ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total);
     }
 	
-	function getScoreArray(tableString) {
+    //Takes an array of strings or arrays of multiple sets of table info, returns the score for each cell
+	function getScoreArray(decodedInputsArray) {
+        //Initialize output array
 		var finalArray = [];
-		for( var k = 0; k < 336; k++) {
+		for(var k = 0; k < 336; k++) {
 			finalArray.push([0,0]);
 		}
 		
-		for( var i = 0; i < tableString.length; i++) {
+        
+		for(var i = 0; i < decodedInputArray.length; i++) {
 			for( var j = 0; j < 336; j++) {
-				if(tableString[i] == 1){
-					finalArray[i][0]++;
-				} else if (tableString[i] == 2){
-					finalArray[i][1]++;
+				if(decodedInputArray[i][j] == 1){
+					finalArray[j][0]++;
+				} else if (decodedInputArray[i][j] == 2){
+					finalArray[j][1]++;
 				}
 			}
 		}
 		
 		for( var i = 0; i < finalArray.length; i++) {
-			finalArray[i] = ci_lower_bound(finalArray[i][0], finalArray[i][1]);
+			finalArray[i] = notAverage(finalArray[i][0], finalArray[i][1]);
 		}
 		
 		return finalArray;
