@@ -325,7 +325,7 @@ $(document).ready(function() {                                                  
     }
     
     function ci_lower_bound(pos, neg) {
-        total = pos + neg;
+        var total = pos + neg;
         if(total === 0) {
             return 0;
         }
@@ -361,7 +361,7 @@ $(document).ready(function() {                                                  
 		var min = scoreArray[0];
 		var max = scoreArray[0];
 		
-		for(int x = 1; x < scoreArray.length; x++){
+		for(var x = 1; x < scoreArray.length; x++){
 			if(scoreArray[x] > max){
 				max = scoreArray[x];
 			}
@@ -371,7 +371,7 @@ $(document).ready(function() {                                                  
 			}
 		}
 		
-		for(int x = 0; x < scoreArray.length; x++){
+		for(var x = 0; x < scoreArray.length; x++){
 			scoreArray[x] = (scoreArray[x] - 1 - min) * (2 / (max - min));
 		}
 		
