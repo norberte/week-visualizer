@@ -337,13 +337,23 @@ $(document).ready(function() {                                                  
     
     //"How Not to Sort by Average Rating" function
     function notAverage(pos, neg) {
+        var sum = pos - neg;
         var total = pos + neg;
+        
         if(total === 0) {
             return 0;
         }
+        
         var z = 1.96;
-        var ratio = pos/total;
-        return (ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total);
+        var ratio = sum/total;
+        
+        if(ratio >= 0) {
+            return (ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total);
+        }
+        else {
+            ratio *= -1;
+            return -(ratio + z*z/(2*total) - z * Math.sqrt((ratio*(1-ratio)+z*z/(4*total))/total))/(1+z*z/total);
+        }
     }
 	
     //Takes an array of sets of table info (0, 1, and 2s. Can be an array of arrays or an array of strings)
@@ -389,12 +399,18 @@ $(document).ready(function() {                                                  
 				min = scoreArray[x];
 			}
 		}
-		
+        
+        /*This is just for debugging, it will display the score each cell got
+        var ind = 0;
+		$("#heat-table td").each(function() {  
+            $(this).html(scoreArray[ind]);
+			ind++;
+        });
+		//*/
+        
         //Translate and stretch the scores to fully fit the range of [-1, 1]
 		for(var x = 0; x < scoreArray.length; x++) {
-            console.log("Before: " + scoreArray[x]);
 			scoreArray[x] = (scoreArray[x] - min) * (2 / (max - min)) - 1;
-            console.log("After : " + scoreArray[x]);
 		}
 		
         //Set the color of each cell to the respective transformed score
