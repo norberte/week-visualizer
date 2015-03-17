@@ -1,5 +1,6 @@
 #week-table, #heat-table {
     width: 100%;
+    clear: both;
 }
 
 #week-table tr td, #heat-table tr td {
@@ -19,10 +20,6 @@
 
 #week-table tr td.busy {
     background-color: red;
-}
-
-#week-container, #heat-container{
-    clear: both;
 }
 
 .container {

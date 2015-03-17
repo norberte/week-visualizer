@@ -66,6 +66,22 @@ $(document).ready(function() {                                                  
         }
     });
     
+    //Change the view between table creation and heat map
+    $("span.radGroup_view input:radio").change(function(){
+        var val = getRadioGroupVal("view");
+        if(val === "index") {
+            console.log("index");
+            $(".heatMap *").hide();
+            $(".index *").show();
+            clipTable();
+        }
+        else if(val === "heatMap") {
+            console.log("heatMap");
+            $(".index *").hide();
+            $(".heatMap *").show();
+        }
+    });
+    
     //Update the table if a default is changed
     $("span.radGroup_default input:radio").change(function(){
         clipTable();
@@ -265,13 +281,7 @@ $(document).ready(function() {                                                  
         $("#week-table tr.hour_" + n + " td").removeClass("free busy");
     }
     
-    //Makes Giant-ass string of mostly 0s, with a few 1s and 2s
-    //Function loops through entire table, so it includes all cells
-    //even if they are not shown... :( <<< That's actually what we need -Kevin
-    
-    //If using chrome right click page and select "inspect Element"
-    //this is where you will see the output of the console.log, it 
-    //is handy for knowing what order the table is parsed.
+    //Returns array of ints with table values (0, 1, 2)
     function getIntArray() {
         var intArray = [];
         $('#week-table td').each(function() {  
@@ -400,7 +410,7 @@ $(document).ready(function() {                                                  
 			}
 		}
         
-        /*This is just for debugging, it will display the score each cell got
+        //*This is just for debugging, it will display the score each cell got
         var ind = 0;
 		$("#heat-table td").each(function() {  
             $(this).html(scoreArray[ind]);

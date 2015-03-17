@@ -13,618 +13,1132 @@
     </head>
     
     <body>
-        <div class="container info">
-            
-            <label for="cb_weekend"     >Include the weekend?</label>
-            <input checked type="checkbox" id="cb_weekend"      value="true"><br>
-            
-            <label for="cb_showHalfHour">Include half hours?</label>
-            <input checked type="checkbox" id="cb_showHalfHour" value="true"><br>
-            
-            <label for="list_startHour">Start hour</label>
-            <select id="list_startHour">
-                <option          value="0">0</option>
-                <option          value="1">1</option>
-                <option          value="2">2</option>
-                <option          value="3">3</option>
-                <option          value="4">4</option>
-                <option          value="5">5</option>
-                <option          value="6">6</option>
-                <option          value="7">7</option>
-                <option          value="8">8</option>
-                <option selected value="9">9</option>
-                <option          value="10">10</option>
-                <option          value="11">11</option>
-                <option          value="12">12</option>
-                <option          value="13">13</option>
-                <option          value="14">14</option>
-                <option          value="15">15</option>
-                <option          value="16">16</option>
-                <option          value="17">17</option>
-                <option          value="18">18</option>
-                <option          value="19">19</option>
-                <option          value="20">20</option>
-                <option          value="21">21</option>
-                <option          value="22">22</option>
-                <option          value="23">23</option>
-            </select><br>
-            
-            <label for="list_endHour">End hour</label>
-            <select id="list_endHour">
-                <option          value="0">0</option>
-                <option          value="1">1</option>
-                <option          value="2">2</option>
-                <option          value="3">3</option>
-                <option          value="4">4</option>
-                <option          value="5">5</option>
-                <option          value="6">6</option>
-                <option          value="7">7</option>
-                <option          value="8">8</option>
-                <option          value="9">9</option>
-                <option          value="10">10</option>
-                <option          value="11">11</option>
-                <option          value="12">12</option>
-                <option          value="13">13</option>
-                <option          value="14">14</option>
-                <option          value="15">15</option>
-                <option          value="16">16</option>
-                <option selected value="17">17</option>
-                <option          value="18">18</option>
-                <option          value="19">19</option>
-                <option          value="20">20</option>
-                <option          value="21">21</option>
-                <option          value="22">22</option>
-                <option          value="23">23</option>
-            </select><br>
-            
-        </div>
-        
-        <div class="container info left">
-        
-            <span>Left click = Free or busy (Blue or red)</span><br>
-            <span>Right click = Reset (Green)</span><br>
-            
-            <div class="container">
-                <span>Cells before start hour default to:</span>
-                <span class="radGroup_default">
-                    <label                     for="rad_startCutoffDefault_busy">busy</label>
-                    <input checked type="radio" id="rad_startCutoffDefault_busy" name="startCutoffDefault" value="busy">
-                    
-                    <label                     for="rad_startCutoffDefault"     >nothing</label>
-                    <input         type="radio" id="rad_startCutoffDefault"      name="startCutoffDefault" value="">
-                    
-                    <label                     for="rad_startCutoffDefault_free">free</label>
-                    <input         type="radio" id="rad_startCutoffDefault_free" name="startCutoffDefault" value="free">
-                </span>
-            </div>
-            
-            <div class="container">
-                <span>Cells after end hour default to:</span>
-                <span class="radGroup_default right">
-                    <label                     for="rad_endCutoffDefault_busy">busy</label>
-                    <input         type="radio" id="rad_endCutoffDefault_busy" name="endCutoffDefault" value="busy">
-                    
-                    <label                     for="rad_endCutoffDefault"     >nothing</label>
-                    <input checked type="radio" id="rad_endCutoffDefault"      name="endCutoffDefault" value="">
-                    
-                    <label                     for="rad_endCutoffDefault_free">free</label>
-                    <input         type="radio" id="rad_endCutoffDefault_free" name="endCutoffDefault" value="free">
-                </span>
-            </div>
-            
-        </div>
-        
-        <div class="container info left">
-            <input type="button" id="btn_resetFree" value="Reset Visible to Free"><br>
-            <input type="button" id="btn_resetBusy" value="Reset Visible to Busy"><br>
-            <input type="button" id="btn_reset" value="Reset Visible">
-        </div>
-        
-        <div class="button">
-            <div>
-                <span class="fork"><a href="https://github.com/vankessel/week-visualizer">View On GitHub</a></span>
-            </div>
-        </div>
-        
-        <div id="week-container">
-            <table id="week-table">
-                <tr>
-                    <th class="hour">Hour</th>
-                    <th class="mon weekday">Monday</th>
-                    <th class="tue weekday">Tuesday</th>
-                    <th class="wed weekday">Wednesday</th>
-                    <th class="thu weekday">Thursday</th>
-                    <th class="fri weekday">Friday</th>
-                    <th class="sat weekend">Saturday</th>
-                    <th class="sun weekend">Sunday</th>
-                </tr>
-                <tr class="hour hour_0">
-                    <th class="hour">0:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_0 half">
-                    <th class="hour">0:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_1">
-                    <th class="hour">1:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_1 half">
-                    <th class="hour">1:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_2">
-                    <th class="hour">2:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_2 half">
-                    <th class="hour">2:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_3">
-                    <th class="hour">3:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_3 half">
-                    <th class="hour">3:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_4">
-                    <th class="hour">4:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_4 half">
-                    <th class="hour">4:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_5">
-                    <th class="hour">5:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_5 half">
-                    <th class="hour">5:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_6">
-                    <th class="hour">6:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_6 half">
-                    <th class="hour">6:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_7">
-                    <th class="hour">7:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_7 half">
-                    <th class="hour">7:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_8">
-                    <th class="hour">8:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_8 half">
-                    <th class="hour">8:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_9">
-                    <th class="hour">9:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_9 half">
-                    <th class="hour">9:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_10">
-                    <th class="hour">10:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_10 half">
-                    <th class="hour">10:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_11">
-                    <th class="hour">11:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_11 half">
-                    <th class="hour">11:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_12">
-                    <th class="hour">12:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_12 half">
-                    <th class="hour">12:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_13">
-                    <th class="hour">13:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_13 half">
-                    <th class="hour">13:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_14">
-                    <th class="hour">14:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_14 half">
-                    <th class="hour">14:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_15">
-                    <th class="hour">15:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_15 half">
-                    <th class="hour">15:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_16">
-                    <th class="hour">16:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_16 half">
-                    <th class="hour">16:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_17">
-                    <th class="hour">17:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_17 half">
-                    <th class="hour">17:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_18">
-                    <th class="hour">18:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_18 half">
-                    <th class="hour">18:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_19">
-                    <th class="hour">19:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_19 half">
-                    <th class="hour">19:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_20">
-                    <th class="hour">20:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_20 half">
-                    <th class="hour">20:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_21">
-                    <th class="hour">21:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_21 half">
-                    <th class="hour">21:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_22">
-                    <th class="hour">22:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_22 half">
-                    <th class="hour">22:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_23">
-                    <th class="hour">23:00</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-                <tr class="hour hour_23 half">
-                    <th class="hour">23:30</th>
-                    <td class="mon weekday"></td>
-                    <td class="tue weekday"></td>
-                    <td class="wed weekday"></td>
-                    <td class="thu weekday"></td>
-                    <td class="fri weekday"></td>
-                    <td class="sat weekend"></td>
-                    <td class="sun weekend"></td>
-                </tr>
-            </table>
-        </div>
         <div class="container">
-            <button id="finished">Finished</button>
-            <p id="output">Output goes here</p>
-            <p id="compressedOutput">Compressed output goes here</p>
-        </div>         
+            <span class="radGroup_view">
+                <label                     for="rad_viewIndex"       >Index</label>
+                <input checked type="radio" id="rad_viewIndex"   name="view" value="index">
+                
+                <label                     for="rad_viewHeatMap"     >Heat Map</label>
+                <input         type="radio" id="rad_viewHeatMap" name="view" value="heatMap">
+            </span>
+        </div>
+    
+        <div class="index">
+            <div class="container info">
+                
+                <label for="cb_weekend"     >Include the weekend?</label>
+                <input checked type="checkbox" id="cb_weekend"      value="true"><br>
+                
+                <label for="cb_showHalfHour">Include half hours?</label>
+                <input checked type="checkbox" id="cb_showHalfHour" value="true"><br>
+                
+                <label for="list_startHour">Start hour</label>
+                <select id="list_startHour">
+                    <option          value="0">0</option>
+                    <option          value="1">1</option>
+                    <option          value="2">2</option>
+                    <option          value="3">3</option>
+                    <option          value="4">4</option>
+                    <option          value="5">5</option>
+                    <option          value="6">6</option>
+                    <option          value="7">7</option>
+                    <option          value="8">8</option>
+                    <option selected value="9">9</option>
+                    <option          value="10">10</option>
+                    <option          value="11">11</option>
+                    <option          value="12">12</option>
+                    <option          value="13">13</option>
+                    <option          value="14">14</option>
+                    <option          value="15">15</option>
+                    <option          value="16">16</option>
+                    <option          value="17">17</option>
+                    <option          value="18">18</option>
+                    <option          value="19">19</option>
+                    <option          value="20">20</option>
+                    <option          value="21">21</option>
+                    <option          value="22">22</option>
+                    <option          value="23">23</option>
+                </select><br>
+                
+                <label for="list_endHour">End hour</label>
+                <select id="list_endHour">
+                    <option          value="0">0</option>
+                    <option          value="1">1</option>
+                    <option          value="2">2</option>
+                    <option          value="3">3</option>
+                    <option          value="4">4</option>
+                    <option          value="5">5</option>
+                    <option          value="6">6</option>
+                    <option          value="7">7</option>
+                    <option          value="8">8</option>
+                    <option          value="9">9</option>
+                    <option          value="10">10</option>
+                    <option          value="11">11</option>
+                    <option          value="12">12</option>
+                    <option          value="13">13</option>
+                    <option          value="14">14</option>
+                    <option          value="15">15</option>
+                    <option          value="16">16</option>
+                    <option selected value="17">17</option>
+                    <option          value="18">18</option>
+                    <option          value="19">19</option>
+                    <option          value="20">20</option>
+                    <option          value="21">21</option>
+                    <option          value="22">22</option>
+                    <option          value="23">23</option>
+                </select><br>
+                
+            </div>
+            
+            <div class="container info left">
+            
+                <span>Left click = Free or busy (Blue or red)</span><br>
+                <span>Right click = Reset (Green)</span><br>
+                
+                <div class="container">
+                    <span>Cells before start hour default to:</span>
+                    <span class="radGroup_default">
+                        <label                     for="rad_startCutoffDefault_busy">busy</label>
+                        <input checked type="radio" id="rad_startCutoffDefault_busy" name="startCutoffDefault" value="busy">
+                        
+                        <label                     for="rad_startCutoffDefault"     >nothing</label>
+                        <input         type="radio" id="rad_startCutoffDefault"      name="startCutoffDefault" value="">
+                        
+                        <label                     for="rad_startCutoffDefault_free">free</label>
+                        <input         type="radio" id="rad_startCutoffDefault_free" name="startCutoffDefault" value="free">
+                    </span>
+                </div>
+                
+                <div class="container">
+                    <span>Cells after end hour default to:</span>
+                    <span class="radGroup_default right">
+                        <label                     for="rad_endCutoffDefault_busy">busy</label>
+                        <input         type="radio" id="rad_endCutoffDefault_busy" name="endCutoffDefault" value="busy">
+                        
+                        <label                     for="rad_endCutoffDefault"     >nothing</label>
+                        <input checked type="radio" id="rad_endCutoffDefault"      name="endCutoffDefault" value="">
+                        
+                        <label                     for="rad_endCutoffDefault_free">free</label>
+                        <input         type="radio" id="rad_endCutoffDefault_free" name="endCutoffDefault" value="free">
+                    </span>
+                </div>
+                
+            </div>
+            
+            <div class="container info left">
+                <input type="button" id="btn_resetFree" value="Reset Visible to Free"><br>
+                <input type="button" id="btn_resetBusy" value="Reset Visible to Busy"><br>
+                <input type="button" id="btn_reset" value="Reset Visible">
+            </div>
+            
+            <div class="button">
+                <div>
+                    <span class="fork"><a href="https://github.com/vankessel/week-visualizer">View On GitHub</a></span>
+                </div>
+            </div>
+            
+            <div id="week-container">
+                <table id="week-table">
+                    <tr>
+                        <th class="hour">Hour</th>
+                        <th class="mon weekday">Monday</th>
+                        <th class="tue weekday">Tuesday</th>
+                        <th class="wed weekday">Wednesday</th>
+                        <th class="thu weekday">Thursday</th>
+                        <th class="fri weekday">Friday</th>
+                        <th class="sat weekend">Saturday</th>
+                        <th class="sun weekend">Sunday</th>
+                    </tr>
+                    <tr class="hour hour_0">
+                        <th class="hour">0:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_0 half">
+                        <th class="hour">0:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_1">
+                        <th class="hour">1:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_1 half">
+                        <th class="hour">1:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_2">
+                        <th class="hour">2:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_2 half">
+                        <th class="hour">2:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_3">
+                        <th class="hour">3:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_3 half">
+                        <th class="hour">3:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_4">
+                        <th class="hour">4:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_4 half">
+                        <th class="hour">4:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_5">
+                        <th class="hour">5:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_5 half">
+                        <th class="hour">5:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_6">
+                        <th class="hour">6:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_6 half">
+                        <th class="hour">6:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_7">
+                        <th class="hour">7:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_7 half">
+                        <th class="hour">7:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_8">
+                        <th class="hour">8:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_8 half">
+                        <th class="hour">8:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_9">
+                        <th class="hour">9:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_9 half">
+                        <th class="hour">9:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_10">
+                        <th class="hour">10:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_10 half">
+                        <th class="hour">10:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_11">
+                        <th class="hour">11:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_11 half">
+                        <th class="hour">11:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_12">
+                        <th class="hour">12:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_12 half">
+                        <th class="hour">12:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_13">
+                        <th class="hour">13:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_13 half">
+                        <th class="hour">13:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_14">
+                        <th class="hour">14:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_14 half">
+                        <th class="hour">14:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_15">
+                        <th class="hour">15:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_15 half">
+                        <th class="hour">15:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_16">
+                        <th class="hour">16:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_16 half">
+                        <th class="hour">16:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_17">
+                        <th class="hour">17:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_17 half">
+                        <th class="hour">17:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_18">
+                        <th class="hour">18:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_18 half">
+                        <th class="hour">18:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_19">
+                        <th class="hour">19:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_19 half">
+                        <th class="hour">19:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_20">
+                        <th class="hour">20:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_20 half">
+                        <th class="hour">20:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_21">
+                        <th class="hour">21:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_21 half">
+                        <th class="hour">21:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_22">
+                        <th class="hour">22:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_22 half">
+                        <th class="hour">22:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_23">
+                        <th class="hour">23:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_23 half">
+                        <th class="hour">23:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="container">
+                <button id="finished">Finished</button>
+                <p id="output">Output goes here</p>
+                <p id="compressedOutput">Compressed output goes here</p>
+            </div>
+        </div>
+        
+        <div class="heatMap">
+            <span class="container">
+                <textarea id="txta_input" rows="1" cols="50"></textarea> 
+                <button id="btn_createHeatmap">Create heat map</button>
+            </span>
+            
+            <div id="heat-container">
+                <table id="heat-table">
+                    <tr>
+                        <th class="hour">Hour</th>
+                        <th class="mon weekday">Monday</th>
+                        <th class="tue weekday">Tuesday</th>
+                        <th class="wed weekday">Wednesday</th>
+                        <th class="thu weekday">Thursday</th>
+                        <th class="fri weekday">Friday</th>
+                        <th class="sat weekend">Saturday</th>
+                        <th class="sun weekend">Sunday</th>
+                    </tr>
+                    <tr class="hour hour_0">
+                        <th class="hour">0:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_0 half">
+                        <th class="hour">0:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_1">
+                        <th class="hour">1:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_1 half">
+                        <th class="hour">1:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_2">
+                        <th class="hour">2:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_2 half">
+                        <th class="hour">2:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_3">
+                        <th class="hour">3:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_3 half">
+                        <th class="hour">3:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_4">
+                        <th class="hour">4:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_4 half">
+                        <th class="hour">4:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_5">
+                        <th class="hour">5:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_5 half">
+                        <th class="hour">5:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_6">
+                        <th class="hour">6:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_6 half">
+                        <th class="hour">6:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_7">
+                        <th class="hour">7:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_7 half">
+                        <th class="hour">7:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_8">
+                        <th class="hour">8:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_8 half">
+                        <th class="hour">8:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_9">
+                        <th class="hour">9:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_9 half">
+                        <th class="hour">9:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_10">
+                        <th class="hour">10:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_10 half">
+                        <th class="hour">10:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_11">
+                        <th class="hour">11:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_11 half">
+                        <th class="hour">11:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_12">
+                        <th class="hour">12:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_12 half">
+                        <th class="hour">12:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_13">
+                        <th class="hour">13:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_13 half">
+                        <th class="hour">13:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_14">
+                        <th class="hour">14:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_14 half">
+                        <th class="hour">14:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_15">
+                        <th class="hour">15:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_15 half">
+                        <th class="hour">15:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_16">
+                        <th class="hour">16:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_16 half">
+                        <th class="hour">16:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_17">
+                        <th class="hour">17:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_17 half">
+                        <th class="hour">17:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_18">
+                        <th class="hour">18:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_18 half">
+                        <th class="hour">18:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_19">
+                        <th class="hour">19:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_19 half">
+                        <th class="hour">19:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_20">
+                        <th class="hour">20:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_20 half">
+                        <th class="hour">20:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_21">
+                        <th class="hour">21:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_21 half">
+                        <th class="hour">21:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_22">
+                        <th class="hour">22:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_22 half">
+                        <th class="hour">22:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_23">
+                        <th class="hour">23:00</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                    <tr class="hour hour_23 half">
+                        <th class="hour">23:30</th>
+                        <td class="mon weekday"></td>
+                        <td class="tue weekday"></td>
+                        <td class="wed weekday"></td>
+                        <td class="thu weekday"></td>
+                        <td class="fri weekday"></td>
+                        <td class="sat weekend"></td>
+                        <td class="sun weekend"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </body>
     
 </html>
