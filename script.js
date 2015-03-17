@@ -74,6 +74,7 @@ $(document).ready(function() {                                                  
             $(".heatMap *").hide();
             $(".index *").show();
             clipTable();
+            $(".radGroup_default.right").css("display", "inline");
         }
         else if(val === "heatMap") {
             console.log("heatMap");
