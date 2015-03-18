@@ -411,7 +411,7 @@ $(document).ready(function() {                                                  
 			}
 		}
         
-        //*This is just for debugging, it will display the score each cell got
+        /*This is just for debugging, it will display the score each cell got
         var ind = 0;
 		$("#heat-table td").each(function() {  
             $(this).html(scoreArray[ind]);
