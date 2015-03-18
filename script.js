@@ -70,14 +70,13 @@ $(document).ready(function() {                                                  
     $("span.radGroup_view input:radio").change(function(){
         var val = getRadioGroupVal("view");
         if(val === "index") {
-            console.log("index");
             $(".heatMap *").hide();
             $(".index *").show();
             clipTable();
+            //Fixes weird visual bug
             $(".radGroup_default.right").css("display", "inline");
         }
         else if(val === "heatMap") {
-            console.log("heatMap");
             $(".index *").hide();
             $(".heatMap *").show();
         }
