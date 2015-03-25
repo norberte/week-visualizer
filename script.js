@@ -129,8 +129,8 @@ $(document).ready(function() {                                                  
     
     //Detects output button press and calls function to make a string.
     $("#finished").click(function() {
-        document.getElementById("output").innerHTML = getIntArray().join("");
-        document.getElementById("compressedOutput").innerHTML = encodeIntArray(getIntArray());
+        $("#output").val(getIntArray().join(""));
+        //document.getElementById("compressedOutput").innerHTML = encodeIntArray(getIntArray());
     });
     
     /***************************************************************************
