@@ -10,7 +10,7 @@ $(document).ready(function() {                                                  
     var beforeStartHourDefault = "busy";
     var afterEndHourDefault = "";
     
-    clipTable();
+    showIndex();
     
     /***************************************************************************
     **Events
@@ -70,15 +70,10 @@ $(document).ready(function() {                                                  
     $("span.radGroup_view input:radio").change(function(){
         var val = getRadioGroupVal("view");
         if(val === "index") {
-            $(".heatMap *").hide();
-            $(".index *").show();
-            clipTable();
-            //Fixes weird visual bug
-            $(".radGroup_default.right").css("display", "inline");
+            showIndex();
         }
         else if(val === "heatMap") {
-            $(".index *").hide();
-            $(".heatMap *").show();
+            showHeatMap();
         }
     });
     
@@ -189,6 +184,19 @@ $(document).ready(function() {                                                  
         if(!$("#cb_showHalfHour").prop("checked")) {
             hideHalfHours();
         }
+    }
+    
+    function showIndex() {
+        $(".heatMap *").hide();
+        $(".index *").show();
+        clipTable();
+        //Fixes weird visual bug
+        $(".radGroup_default.right").css("display", "inline");
+    }
+    
+    function showHeatMap() {
+        $(".index *").hide();
+        $(".heatMap *").show();
     }
     
     //Get the value from a group of radio buttons by name
