@@ -105,7 +105,7 @@ $(document).ready(function() {                                                  
     
     //Ability to select free times, busy times, and reset
     $("#week-table tr td").click(function(event) {                          
-        switch (event.which) {                                                  //event.which returns the value of the mouseclick in this case
+        switch (event.which) {                                                  //event.which returns the value of the mouse click
             //Left mouse
             case 1:
                 //If green toggle one, otherwise toggle both
@@ -130,7 +130,7 @@ $(document).ready(function() {                                                  
     //Detects output button press and calls function to make a string.
     $("#finished").click(function() {
         $("#output").val(getIntArray().join(""));
-        //document.getElementById("compressedOutput").innerHTML = encodeIntArray(getIntArray());
+        document.getElementById("compressedOutput").innerHTML = encodeIntArray(getIntArray());
     });
     
     /***************************************************************************
@@ -231,17 +231,42 @@ $(document).ready(function() {                                                  
     //Show and hide all half hours
     function showHalfHours() {
         $("#week-table tr.half").show();
+        copyHoursToHalfHours()
     }
     function hideHalfHours() {
         $("#week-table tr.half").hide();
-        $("#week-table tr.half td").removeClass("free busy");
-        /*
-        **TODO: For every first half of the hour with class
-        **Add same class to second half of the hour.
-        **E.g. Set 1:00 as busy, hide half hours. Now the 1:00-1:30 block
-        **is set, but the 1:30-2:00 block is not. This is bad. In the
-        **"full hour" mode, a selection should cover 1:00-2:00.
-        */
+        copyHoursToHalfHours();
+    }
+    
+    function copyHoursToHalfHours() {
+        var arr = ["", "", "", "", "", "", ""];
+        var count = 0;
+        $('#week-table td').each(function() {
+            if(0 <= count && count <= 6) {
+                if($(this).hasClass("free")) {
+                    arr[count] = "free";
+                }
+                else if($(this).hasClass("busy")) {
+                    arr[count] = "busy";
+                }
+                else {
+                    arr[count] = "";
+                }
+                count++;
+            }
+            else if(7 <= count && count <= 13) {
+                $(this).removeClass("free busy");
+                if(arr[count-7] !== "") {
+                    $(this).addClass(arr[count-7]);
+                }
+                if(count === 13) {
+                    count = 0;
+                }
+                else {
+                    count++;
+                }
+            }
+        });
     }
     
     //Set and remove classes for rows
@@ -348,7 +373,7 @@ $(document).ready(function() {                                                  
         }
     }
     
-    //May be redundant, but gonna keep this method here just incase
+    //May be redundant, but gonna keep this method here just in-case
     function parseString(string) {
         return string.split(",");
     }
@@ -454,8 +479,9 @@ $(document).ready(function() {                                                  
         var trailingByte = encodeTrailingByte(tempArray);
         
         //Create the encoded array
-        //The "bytes" in this function are in decimal
+        //encodeLeadingByte() returns a byte in decimal form
         encodedArray.push(encodeLeadingByte(tempArray));
+        //encodeMiddleBytes() returns an array so it must be concatenated rather than pushed
         encodedArray = encodedArray.concat(encodeMiddleBytes(tempArray));
         encodedArray.push(trailingByte);
         
@@ -465,6 +491,7 @@ $(document).ready(function() {                                                  
     }
     
     function decodeString(string) {
+        var encodedArray = string.split("").map(function(x){return x.charCodeAt(0)-256});
         
     }
 
@@ -473,7 +500,7 @@ $(document).ready(function() {                                                  
     function encodeLeadingByte(intArray) {
         //shift() returns the first element and removes it from the array
         var type = intArray.shift();
-        //How many times does type repeat? (Total cells of type = repeats + 1)
+        //How many times does the type of the removed element repeat? (Total cells of type = repeats + 1)
         var repeatLength = 0;
         //How I chose to encode:
         //If 1st bit is 1, then the type is 2
@@ -618,3 +645,7 @@ $(document).ready(function() {                                                  
         return str.substr(0,index) + chr + str.substr(index+1);
     }
 });
+function decodeString(string) {
+        var encodedArray = string.split("").map(function(x){return x.charCodeAt(0)-256});
+        console.log(encodedArray);
+    }
