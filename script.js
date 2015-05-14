@@ -3,6 +3,13 @@ $(document).ready(function() {                                                  
     /***************************************************************************
     **Initialization
     */
+	
+	Parse.initialize("viAaWs9CN1lZEZDhwotmYK6CnXemexeAnbmHfobX", "nT9VMVPNj0I53354nbc6NldWnWQkeZyM9w6rLqNU");
+	
+	var TestObject = Parse.Object.extend("TestObject");
+	var testObject = new TestObject();
+	testObject.save({foo: "bar"}).then(function(object) {
+	alert("yay! it worked");
     
     //Initialize start and end hours to those selected in the html
     var startHour = parseInt($("#list_startHour").val());
@@ -132,6 +139,9 @@ $(document).ready(function() {                                                  
         $("#output").val(getIntArray().join(""));
         document.getElementById("compressedOutput").innerHTML = encodeIntArray(getIntArray());
     });
+	
+	
+});
     
     /***************************************************************************
     **Functions
