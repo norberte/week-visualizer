@@ -9,7 +9,7 @@ $(document).ready(function() {                                                  
 	var TestObject = Parse.Object.extend("TestObject"); 
 	var testObject = new TestObject(); // declare a test object
 	testObject.save({foo: "bar"}).then(function(object) {  // save test data
-	// alert("yay! it worked"); });  // i used this to see if it works
+	// alert("yay! it worked"); });  // I used this to see if it works
     
     //Initialize start and end hours to those selected in the html
     var startHour = parseInt($("#list_startHour").val());
