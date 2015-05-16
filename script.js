@@ -9,7 +9,8 @@ $(document).ready(function() {                                                  
 	var TestObject = Parse.Object.extend("TestObject"); 
 	var testObject = new TestObject(); // declare a test object
 	testObject.save({foo: "bar"}).then(function(object) {  // save test data
-	// alert("yay! it worked"); });  // i used this to see if it works
+        alert("yay! it worked"); // I used this to see if it works
+    });  
     
     //Initialize start and end hours to those selected in the html
     var startHour = parseInt($("#list_startHour").val());
@@ -139,9 +140,6 @@ $(document).ready(function() {                                                  
         $("#output").val(getIntArray().join(""));
         document.getElementById("compressedOutput").innerHTML = encodeIntArray(getIntArray());
     });
-	
-	
-});
     
     /***************************************************************************
     **Functions
@@ -655,7 +653,3 @@ $(document).ready(function() {                                                  
         return str.substr(0,index) + chr + str.substr(index+1);
     }
 });
-function decodeString(string) {
-        var encodedArray = string.split("").map(function(x){return x.charCodeAt(0)-256});
-        console.log(encodedArray);
-    }
