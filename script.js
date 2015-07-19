@@ -501,6 +501,15 @@ $(document).ready(function() {                                                  
     function decodeString(string) {
         var encodedArray = string.split("").map(function(x){return x.charCodeAt(0)-256});
         
+        var leadingByte = encodedArray.shift();
+        var trailingByte = encodedArray.pop();
+        var middleBytes = encodedArray;
+        
+        var intArray = decodeLeadingByte(leadingByte);
+        intArray.concat(decodeMiddleBytes);
+        intArray.concat(decodeTrailingByte);
+        
+        return intArray;
     }
 
     //This is the first byte. The first few bits determine the type (0, 1, or 2)
@@ -508,10 +517,10 @@ $(document).ready(function() {                                                  
     function encodeLeadingByte(intArray) {
         //shift() returns the first element and removes it from the array
         var type = intArray.shift();
-        //How many times does the type of the removed element repeat? (Total cells of type = repeats + 1)
+        //How many times does the type of the removed element repeat? (Total cells of type = repeatLength + 1)
         var repeatLength = 0;
         //How I chose to encode:
-        //If 1st bit is 1, then the type is 2
+        //If the type is 2, then the 1st bit is 1
         //use the other 7 for repeatLength
         if(type === 2) {
             //Find out how many repeats there are within the max I can store
@@ -520,29 +529,58 @@ $(document).ready(function() {                                                  
                 repeatLength += 1;
             }
             //Create byte from the repeatLength
-            var byte = addPadding(repeatLength.toString(2), 8);
-            //Change 0th char to 1 (indicates type is 2, as I've said before)
-            byte = setCharAt(byte, 0, 1);
+            var stringByte = addPadding(repeatLength.toString(2), 8);
+            //Change leading digit to 1 (indicates type is 2, as I've said before)
+            stringByte = setCharAt(stringByte, 0, 1);
         }
-        //If 1st bit is 0, then the type is 0 or 1, encode the 2nd bit
-        //If the 2nd bit is 0, then the type is 0
-        //If the 2nd bit is 1, then the type is 1
+        //If the type is 0 or 1, the 1st bit is 0, then encode the 2nd bit
+        //If the type is 0, then the 2nd bit is 0
+        //If the type is 1, then the 2nd bit is 1
         //use the other 6 for repeatLength
         else {
             while(intArray[0] === type && repeatLength < 63) {
                 intArray.shift()
                 repeatLength += 1;
             }
-            var byte = addPadding(repeatLength.toString(2), 8);
-            byte = setCharAt(byte, 0, 0);
-            byte = setCharAt(byte, 1, type);
+            var stringByte = addPadding(repeatLength.toString(2), 8);
+            stringByte = setCharAt(stringByte, 0, 0);
+            stringByte = setCharAt(stringByte, 1, type);
         }
         //Return the decimal form of the byte
-        return parseInt(byte, 2);
+        return parseInt(stringByte, 2);
     }
     
     function decodeLeadingByte(leadingByte) {
+        var stringByte = addPadding(leadingByte.toString(2), 8);
+        var leadingArray = [];
+        var repeatLength;
         
+        //If the type of the repeating cell is 2
+        if(stringByte[0] === "1") {
+            stringByte = setCharAt(stringByte, 0, 0);
+            repeatLength = parseInt(stringByte, 2);
+            
+            for(var i = 0; i < repeatLength+1; i++) {
+                leadingArray.push(2);
+            }
+        }
+        else if(stringByte[1] === "1") {
+            stringByte = setCharAt(stringByte, 1, 0);
+            repeatLength = parseInt(stringByte, 2);
+            
+            for(var i = 0; i < repeatLength+1; i++) {
+                leadingArray.push(1);
+            }
+        }
+        else {
+            repeatLength = parseInt(stringByte, 2);
+            
+            for(var i = 0; i < repeatLength+1; i++) {
+                leadingArray.push(0);
+            }
+        }
+        
+        return leadingArray;
     }
 
     //Will explain this part later
