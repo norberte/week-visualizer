@@ -3,8 +3,8 @@
     clear: both;
 }
 
-#week-table tr td, #heat-table tr td {
-    background-color: green;
+td {
+    background-color: #00CC33;
     width: 10000px; /*Should find a better way to evenly distribute the columns*/
     
     border: solid 2px #000000;
@@ -14,12 +14,17 @@
     -moz-border-radius: 2px;
 }
 
-#week-table tr td.free {
-    background-color: blue;
+td.free {
+    background-color: #0033FF;
 }
 
-#week-table tr td.busy {
-    background-color: red;
+td.busy {
+    background-color: #CC0000;
+}
+
+#exampleTable td {
+    width: 16px;
+    height: 16px;
 }
 
 .container {
@@ -39,6 +44,10 @@
 .right {
     position: absolute;
     right: 0px;
+}
+
+#hiddenTable {
+    visibility: hidden;
 }
 
 /*All of the below is stolen from the main theme*/

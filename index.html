@@ -637,10 +637,46 @@
         </div>
         
         <div class="heatMap">
-            <span class="container">
-                <textarea id="txta_input" rows="1" cols="50"></textarea> 
-                <button id="btn_createHeatmap">Create heat map</button>
-            </span>
+        
+            <div class="container">
+            
+                <span class="container info">
+                    <textarea id="txta_input" rows="1" cols="50"></textarea> 
+                    <button id="btn_createHeatmap">Create heat map</button>
+                </span>
+                
+                <span class="container info">Worst</span>
+                
+                <span class="container info">
+                    <table id="exampleTable">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </span>
+                
+                <span class="container info">Best</span>
+                
+            </div>
             
             <div id="heat-container">
                 <table id="heat-table">
@@ -1137,6 +1173,14 @@
                 </table>
             </div>
         </div>
+        
+        <table id="hiddenTable">
+            <tr>
+                <td class="busy"></td>
+                <td></td>
+                <td class="free"></td>
+            </tr>
+        </table>
         
         <script type='text/javascript' src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
 		<script type='text/javascript' src='http://www.parsecdn.com/js/parse-1.4.2.min.js'></script>

@@ -19,6 +19,15 @@ $(document).ready(function() {                                                  
     var beforeStartHourDefault = "busy";
     var afterEndHourDefault = "";
     
+    //Initialize exampleTable
+    var increment = 2.0 / $("#exampleTable td").length;
+    var n = -1.0;
+    $("#exampleTable td").each(function(){
+        $(this).css("background-color", fractionToColor(n));
+        //$(this).text(n);
+        n += increment;
+    })
+    
     showIndex();
     
     /***************************************************************************
@@ -349,42 +358,53 @@ $(document).ready(function() {                                                  
     **Heat Map functions
     */
     
+    //n is a number [-1,1]
     function fractionToColor(n) {
-        // -1 = #ff0000 Red
-        //-.5 = #ffff00 Yellow
-        //  0 = #00ff00 Green
-        //0.5 = #00ffff Cyan
-        //  1 = #0000ff Blue
-        //There may be a more mathematically clean way to do this
-        if(-1.0 <= n && n <= -0.5) {
-            //Color value from 0-255
-            var green = Math.floor((n+1)*2*255);
-            var hex = green.toString(16);
-            //Pad the result to a width of 2
-            hex = ("00" + hex).substring(hex.length);
-            return "#ff" + hex + "00";
+        
+        //Get colors
+        c1 = $("#hiddenTable .busy").css("background-color");
+        c2 = $("#hiddenTable td:not(.busy, .free)").css("background-color");
+        c3 = $("#hiddenTable .free").css("background-color");
+        //Change to hex format if in rgb format
+        if(c1.substring(0, 3) === "rgb") {
+            c1 = rgb2hex(c1);
+            c2 = rgb2hex(c2);
+            c3 = rgb2hex(c3);
         }
-        else if(n <= 0.0) {
-            var red = Math.floor(n*(-2)*255);
-            var hex = red.toString(16);
+        
+        //n is a number [0,1], start and end are hex strings of 2 digits
+        function hexLinInt(n, start, end) {
+            start = parseInt(start, 16);
+            end = parseInt(end, 16);
+            var hex = Math.round((end - start) * n + start);
+            hex = hex.toString(16);
             hex = ("00" + hex).substring(hex.length);
-            return "#" + hex + "ff00";
+            return hex;
         }
-        else if(n <= 0.5) {
-            var blue = Math.floor(n*2*255);
-            var hex = blue.toString(16);
-            hex = ("00" + hex).substring(hex.length);
-            return "#00ff" + hex;
+        
+        if(-1.0 <= n && n <= 0.0) {
+            var part1 = hexLinInt(n+1, c1.substring(1,3), c2.substring(1,3));
+            var part2 = hexLinInt(n+1, c1.substring(3,5), c2.substring(3,5));
+            var part3 = hexLinInt(n+1, c1.substring(5)  , c2.substring(5));
+            return "#" + part1 + part2 + part3;
         }
         else if(n <= 1.0) {
-            var green = Math.floor((n-1)*(-2)*255);
-            var hex = green.toString(16);
-            hex = ("00" + hex).substring(hex.length);
-            return "#00" + hex + "ff";
+            var part1 = hexLinInt(n, c2.substring(1,3), c3.substring(1,3));
+            var part2 = hexLinInt(n, c2.substring(3,5), c3.substring(3,5));
+            var part3 = hexLinInt(n, c2.substring(5)  , c3.substring(5));
+            return "#" + part1 + part2 + part3;
         }
         else {
             return "#ffffff"
         }
+    }
+    
+    function rgb2hex(rgb) {
+        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        function hex(x) {
+            return ("0" + parseInt(x).toString(16)).slice(-2);
+        }
+        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
     }
     
     //May be redundant, but gonna keep this method here just in-case
