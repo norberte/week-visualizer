@@ -20,7 +20,7 @@ $(document).ready(function() {                                                  
     var afterEndHourDefault = "";
     
     //Initialize exampleTable
-    var increment = 2.0 / $("#exampleTable td").length;
+    var increment = 2.0 / ($("#exampleTable td").length - 1);
     var n = -1.0;
     $("#exampleTable td").each(function(){
         $(this).css("background-color", fractionToColor(n));
