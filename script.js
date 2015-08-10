@@ -382,20 +382,26 @@ $(document).ready(function() {                                                  
             return hex;
         }
         
-        if(-1.0 <= n && n <= 0.0) {
+        if(n < -0.999) {
+            return "#000000";
+        }
+        else if(-0.999 <= n && n <= 0.0) {
             var part1 = hexLinInt(n+1, c1.substring(1,3), c2.substring(1,3));
             var part2 = hexLinInt(n+1, c1.substring(3,5), c2.substring(3,5));
             var part3 = hexLinInt(n+1, c1.substring(5)  , c2.substring(5));
             return "#" + part1 + part2 + part3;
         }
-        else if(n <= 1.0) {
+        else if(n <= 0.999) {
             var part1 = hexLinInt(n, c2.substring(1,3), c3.substring(1,3));
             var part2 = hexLinInt(n, c2.substring(3,5), c3.substring(3,5));
             var part3 = hexLinInt(n, c2.substring(5)  , c3.substring(5));
             return "#" + part1 + part2 + part3;
         }
+        else if(0.999 < n) {
+            return "#ffffff";
+        }
         else {
-            return "#ffffff"
+            return "#ff00ff";
         }
     }
     
@@ -498,6 +504,7 @@ $(document).ready(function() {                                                  
 		var index = 0;
 		$("#heat-table td").each(function() {  
             $(this).css("background-color", fractionToColor(scoreArray[index]));
+            //$(this).text(scoreArray[index]);
 			index++;
         });
 	}
